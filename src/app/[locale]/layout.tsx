@@ -20,7 +20,7 @@ export function generateStaticParams() { return [{ locale: 'en' }, { locale: 'ar
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (locale !== 'en' && locale !== 'ar') return {};
-  return { title: { default: 'Indom Labs', template: '%s | Indom Labs' }, description: content[locale].intro };
+  return { title: { default: 'Redom Labs', template: '%s | Redom Labs' }, description: content[locale].intro };
 }
 const themeScript = `(function(){var t='light';try{if(localStorage.getItem('indom-theme')==='dark')t='dark'}catch(e){}document.documentElement.dataset.theme=t})()`;
 export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
@@ -32,7 +32,7 @@ export default async function Layout({ children, params }: { children: React.Rea
       <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       <SiteEntrance><a className="skip" href="#main">{t.skip}</a>
       <header className="site-header"><div className="header-inner">
-        <Link href={`/${l}`} className="navbrand" aria-label="Indom Labs"><Brand compact /><span>LABS</span></Link>
+        <Link href={`/${l}`} className="navbrand" aria-label="Redom Labs"><Brand compact /><span>LABS</span></Link>
         <Navigation locale={l} />
         <div className="header-tools"><LanguageLink locale={l} /><ThemeToggle ar={l === 'ar'} /><Link className="nav-cta" href={`/${l}/contact`}>{t.start}<span aria-hidden="true">↗</span></Link></div>
       </div></header>

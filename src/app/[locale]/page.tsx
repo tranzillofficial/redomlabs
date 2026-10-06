@@ -1,36 +1,37 @@
-import { ServicePaths } from '../../components/ServicePaths';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Brand } from '../../components/Brand';
+import { ServicePaths } from '../../components/ServicePaths';
 import { content, type Locale } from '../../content';
 
-const serviceIcons = [
-  <path key="web" d="M4 5h16v14H4zM4 9h16M7 7h.01M10 7h.01M9 12l-2 2 2 2m6-4 2 2-2 2" />,
-  <path key="app" d="M7 3h10v18H7zM10 18h4M9 6h6" />,
-  <path key="ai" d="M9 3h6v4H9zM5 9h14v10H5zM9 13h.01M15 13h.01M9 16h6M2 12v4m20-4v4" />,
-  <path key="design" d="m4 17 9-9 3 3-9 9H4zM13 8l3-3 3 3-3 3M5 4v5M2.5 6.5h5M19 16v5m-2.5-2.5h5" />,
-  <path key="marketing" d="m4 10 12-5v14L4 14zM16 9h4v6h-4M6 15l2 6h4l-2-5" />,
-  <path key="strategy" d="M4 19h16M7 16v-4m5 4V8m5 8V4M5 7l5-3 4 2 5-4" />,
-];
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (locale !== 'ar' && locale !== 'en') notFound();
+  const ar = locale === 'ar';
   const t = content[locale as Locale];
-  return <>
-    <section className="hero">
-      <div className="hero-content"><p className="eyebrow"><span className="status-dot" />{t.studio}</p>
-        <h1>{t.headline[0]}<br /><em>{t.headline[1]}</em></h1><p className="intro">{t.intro}</p>
-        <div className="actions"><Link className="button" href={`/${locale}/contact`}>{t.start}<span aria-hidden="true">↗</span></Link><Link className="textlink" href="#services">{t.explore}<span aria-hidden="true">↓</span></Link></div>
+  const choose = (en: string, arabic: string) => ar ? arabic : en;
+  return <div className="growth-home">
+    <section className="growth-hero">
+      <div className="growth-hero-art" aria-hidden="true" />
+      <div className="growth-hero-content">
+        <p className="eyebrow">{choose('Technology × Marketing × Growth', 'تكنولوجيا × تسويق × نمو')}</p>
+        <h1>{choose('Build digital products that move business', 'نبني منتجات رقمية تدفع أعمالك')} <em>{choose('forward.', 'للأمام.')}</em></h1>
+        <p className="intro">{choose('We create software, digital products, and growth systems for ambitious businesses.', 'نطوّر البرمجيات والمنتجات الرقمية وحلول النمو لأعمال تطمح للمزيد.')}</p>
+        <div className="actions"><Link className="button" href={`/${locale}/contact`}>{t.start}<span aria-hidden="true">→</span></Link><Link className="growth-outline" href="#approach"><span className="play-icon" aria-hidden="true">▶</span>{choose('See how we work', 'اكتشف طريقة شغلنا')}</Link></div>
+        <div className="growth-highlights">{[
+          [choose('Software', 'برمجيات'), choose('Built around your business', 'حلول تناسب نشاطك')],
+          [choose('Marketing', 'تسويق'), choose('A presence with purpose', 'حضور يحقق هدفك')],
+          [choose('AI & R&D', 'ذكاء اصطناعي'), choose('Explore what’s next', 'نبتكر خطوتك القادمة')],
+        ].map(([title, desc]) => <div key={title}><strong>{title}</strong><span>{desc}</span></div>)}</div>
       </div>
-      <div className="hero-brand"><Brand /><p className="slogan">{t.slogan}</p></div>
-      <div className="hero-bottom"><span>{t.footer}</span><Link href={`/${locale}/about`}>{t.aboutLink}<span aria-hidden="true">↗</span></Link></div>
     </section>
-    <section id="services" className="section capabilities"><div className="section-heading"><div><p className="eyebrow">{t.capability}</p><h2>{t.serviceTitle}</h2></div><Link className="textlink" href={`/${locale}/services`}>{t.allServices}<span aria-hidden="true">↗</span></Link></div>
-      <ServicePaths ar={locale === "ar"} />
+    <section id="services" className="section growth-services">
+      <div className="section-heading"><div><p className="eyebrow">{choose('Our services', 'خدماتنا')}</p><h2>{choose('What can we build for you?', 'إيه اللي نقدر نبنيه ليك؟')}</h2></div><p>{choose('Technology and marketing working together to create real business impact.', 'التكنولوجيا والتسويق مع بعض، عشان نصنع تأثير حقيقي في شغلك.')}</p><Link className="textlink" href={`/${locale}/services`}>{t.allServices}<span aria-hidden="true">→</span></Link></div>
+      <ServicePaths ar={ar} />
     </section>
-    <section className="section process"><div className="section-heading"><div><p className="eyebrow">{t.processLabel}</p><h2>{t.processTitle}</h2></div><p>{t.processIntro}</p></div>
-      <div className="steps">{t.steps.map(([title, desc], i) => <div key={title}><span className="step-index">0{i + 1}</span><h3>{title}</h3><p>{desc}</p></div>)}</div>
+    <section className="growth-products"><div className="growth-products-art" aria-hidden="true" /><div className="growth-products-content"><p className="eyebrow">{choose('Our products', 'منتجاتنا')}</p><h2>{choose('Products for real growth.', 'منتجات تصنع نمو حقيقي.')}</h2><p>{choose('We build and scale digital products to solve real business challenges.', 'نبني ونطوّر منتجات رقمية لحل تحديات حقيقية تواجه الأعمال.')}</p><Link className="button" href={`/${locale}/products`}>{choose('Explore products', 'اكتشف منتجاتنا')}<span aria-hidden="true">→</span></Link></div></section>
+    <section id="approach" className="section growth-process"><div className="section-heading"><div><p className="eyebrow">{t.processLabel}</p><h2>{choose('From idea to impact.', 'من الفكرة للتأثير.')}</h2></div><p>{choose('A clear process. Direct communication. Thoughtful execution. Real results.', 'خطوات واضحة. تواصل مباشر. تنفيذ مدروس. نتائج حقيقية.')}</p></div>
+      <div className="growth-steps">{t.steps.map(([title, desc], i) => <article key={title}><span className="growth-step-icon" aria-hidden="true">{['⌕','▤','◇','↗'][i]}</span><div><span className="growth-step-number">0{i + 1}</span><h3>{title}</h3><p>{desc}</p></div></article>)}</div>
     </section>
-    <section className="section cta"><div><p className="eyebrow">INDOM LABS</p><h2>{t.cta}</h2><p>{t.ctaText}</p></div><Link className="button" href={`/${locale}/contact`}>{t.start}<span aria-hidden="true">↗</span></Link></section>
-  </>;
+    <section className="growth-cta"><div className="growth-cta-art" aria-hidden="true" /><div className="growth-cta-content"><p className="eyebrow">{choose('Let’s work together', 'خلّينا نشتغل مع بعض')}</p><h2>{choose('Ready to build what’s next?', 'جاهز تبني خطوتك الجاية؟')}</h2><p>{choose('Share your idea and let’s turn it into a powerful digital product or growth strategy.', 'شاركنا فكرتك، ونحوّلها لمنتج رقمي قوي أو استراتيجية تنمّي أعمالك.')}</p><Link className="button" href={`/${locale}/contact`}>{t.start}<span aria-hidden="true">→</span></Link></div></section>
+  </div>;
 }
