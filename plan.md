@@ -158,3 +158,10 @@ Hold/depth production: 192188316e14d6540e917b72dc26ffe8e0a66662, deployment dpl_
 - [x] Use responsive Next Image optimization, explicit sizes, high quality and hero preload; photos remain clear without gradient masks or dark filters.
 - [x] Record source pages, photographers and CDN URLs in src/photos.ts. Retrieved source pages label each photo free under the Unsplash License. Photos illustrate topics and do not represent Redom employees or portfolio work.
 - [ ] Publish and verify production image responses.
+
+## Approved minimal design implementation — 2026-10-07
+- Rebuild the homepage from the final owner-approved mockup: airy cream layout, quiet typography, text-only service columns, a bordered MenuzQR row, compact four-step approach and two photographic panels only.
+- Use free Unsplash desktop/notebook and hands-wireframing photos in place of the illustrative mockup photos. All actual page text remains selectable bilingual HTML.
+- Apply a one-sided CSS image mask toward the text (left in English, right in Arabic, top on stacked mobile); retain straight unframed crop boundaries on the other three sides.
+- Preserve working navigation, contact brief, AION, dark theme and reduced-motion preferences.
+- Validation: Next.js production build/TypeScript and both prerendered locale pages passed; exactly two photos. Browser visual verification remains unavailable locally.
