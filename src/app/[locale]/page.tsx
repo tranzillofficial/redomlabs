@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import { photos } from '../../photos';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ServicePaths } from '../../components/ServicePaths';
@@ -11,7 +13,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const choose = (en: string, arabic: string) => ar ? arabic : en;
   return <div className="growth-home">
     <section className="growth-hero">
-      <div className="growth-hero-art" aria-hidden="true" />
+      <div className="growth-hero-art" aria-hidden="true"><Image src={photos.hero.src} alt="" fill quality={90} sizes="(max-width: 760px) 100vw, 60vw" preload /></div>
       <div className="growth-hero-content">
         <p className="eyebrow">{choose('Technology × Marketing × Growth', 'تكنولوجيا × تسويق × نمو')}</p>
         <h1>{choose('Build digital products that move business', 'نبني منتجات رقمية تدفع أعمالك')} <em>{choose('forward.', 'للأمام.')}</em></h1>
@@ -28,10 +30,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <div className="section-heading"><div><p className="eyebrow">{choose('Our services', 'خدماتنا')}</p><h2>{choose('What can we build for you?', 'إيه اللي نقدر نبنيه ليك؟')}</h2></div><p>{choose('Technology and marketing working together to create real business impact.', 'التكنولوجيا والتسويق مع بعض، عشان نصنع تأثير حقيقي في شغلك.')}</p><Link className="textlink" href={`/${locale}/services`}>{t.allServices}<span aria-hidden="true">→</span></Link></div>
       <ServicePaths ar={ar} />
     </section>
-    <section className="growth-products"><div className="growth-products-art" aria-hidden="true" /><div className="growth-products-content"><p className="eyebrow">{choose('Our products', 'منتجاتنا')}</p><h2>{choose('Products for real growth.', 'منتجات تصنع نمو حقيقي.')}</h2><p>{choose('We build and scale digital products to solve real business challenges.', 'نبني ونطوّر منتجات رقمية لحل تحديات حقيقية تواجه الأعمال.')}</p><Link className="button" href={`/${locale}/products`}>{choose('Explore products', 'اكتشف منتجاتنا')}<span aria-hidden="true">→</span></Link></div></section>
+    <section className="growth-products"><div className="growth-products-art" aria-hidden="true"><Image src={photos.products.src} alt="" fill quality={90} sizes="(max-width: 760px) 100vw, 60vw" /></div><div className="growth-products-content"><p className="eyebrow">{choose('Our products', 'منتجاتنا')}</p><h2>{choose('Products for real growth.', 'منتجات تصنع نمو حقيقي.')}</h2><p>{choose('We build and scale digital products to solve real business challenges.', 'نبني ونطوّر منتجات رقمية لحل تحديات حقيقية تواجه الأعمال.')}</p><Link className="button" href={`/${locale}/products`}>{choose('Explore products', 'اكتشف منتجاتنا')}<span aria-hidden="true">→</span></Link></div></section>
     <section id="approach" className="section growth-process"><div className="section-heading"><div><p className="eyebrow">{t.processLabel}</p><h2>{choose('From idea to impact.', 'من الفكرة للتأثير.')}</h2></div><p>{choose('A clear process. Direct communication. Thoughtful execution. Real results.', 'خطوات واضحة. تواصل مباشر. تنفيذ مدروس. نتائج حقيقية.')}</p></div>
       <div className="growth-steps">{t.steps.map(([title, desc], i) => <article key={title}><span className="growth-step-icon" aria-hidden="true">{['⌕','▤','◇','↗'][i]}</span><div><span className="growth-step-number">0{i + 1}</span><h3>{title}</h3><p>{desc}</p></div></article>)}</div>
     </section>
-    <section className="growth-cta"><div className="growth-cta-art" aria-hidden="true" /><div className="growth-cta-content"><p className="eyebrow">{choose('Let’s work together', 'خلّينا نشتغل مع بعض')}</p><h2>{choose('Ready to build what’s next?', 'جاهز تبني خطوتك الجاية؟')}</h2><p>{choose('Share your idea and let’s turn it into a powerful digital product or growth strategy.', 'شاركنا فكرتك، ونحوّلها لمنتج رقمي قوي أو استراتيجية تنمّي أعمالك.')}</p><Link className="button" href={`/${locale}/contact`}>{t.start}<span aria-hidden="true">→</span></Link></div></section>
+    <section className="growth-cta"><div className="growth-cta-art" aria-hidden="true"><Image src={photos.contact.src} alt="" fill quality={90} sizes="(max-width: 760px) 100vw, 60vw" /></div><div className="growth-cta-content"><p className="eyebrow">{choose('Let’s work together', 'خلّينا نشتغل مع بعض')}</p><h2>{choose('Ready to build what’s next?', 'جاهز تبني خطوتك الجاية؟')}</h2><p>{choose('Share your idea and let’s turn it into a powerful digital product or growth strategy.', 'شاركنا فكرتك، ونحوّلها لمنتج رقمي قوي أو استراتيجية تنمّي أعمالك.')}</p><Link className="button" href={`/${locale}/contact`}>{t.start}<span aria-hidden="true">→</span></Link></div></section>
   </div>;
 }

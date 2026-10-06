@@ -151,3 +151,10 @@ Hold/depth production: 192188316e14d6540e917b72dc26ffe8e0a66662, deployment dpl_
 - [x] Production build and TypeScript passed.
 - [ ] Browser-based visual and interactive checks: unavailable in this workspace; Chromium is absent and its download is blocked/invalid. Responsive and RTL styles are implemented but actual rendering is not verified.
 - [ ] Production deployment: not performed; deliver changes through a reviewable GitHub branch and pull request.
+
+## Unsplash photography replacement — 2026-10-06
+- [x] Replace every glass/cropped illustration with five topic-matched Unsplash photos: developer, code, marketing analytics, digital workspace and team collaboration.
+- [x] Remove the old crop assets and discard the unshipped generated replacements after the owner changed direction.
+- [x] Use responsive Next Image optimization, explicit sizes, high quality and hero preload; photos remain clear without gradient masks or dark filters.
+- [x] Record source pages, photographers and CDN URLs in src/photos.ts. Retrieved source pages label each photo free under the Unsplash License. Photos illustrate topics and do not represent Redom employees or portfolio work.
+- [ ] Publish and verify production image responses.
