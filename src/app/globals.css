@@ -1478,3 +1478,6 @@ button { cursor: pointer; }
 .about-process li { padding-inline-start: 12px; margin-bottom: 24px; }
 .about-process li:last-child { margin-bottom: 0; }
 @media(max-width:640px) { .project-catalog-grid, .about-introduction, .about-pillars, .about-process { grid-template-columns: 1fr; gap: 24px; } .portfolio-cover { height: 220px; } .portfolio-body { padding: 22px; } }
+
+/* Thumbnail editor and published cards share the same framing. */
+.portfolio-cover { display: block; height: auto; aspect-ratio: 8 / 5; object-fit: cover; }
