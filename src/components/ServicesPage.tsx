@@ -140,7 +140,7 @@ const servicesData = {
         { label: 'إعداد السحابة، الترحيل، وDevOps', icon: '⬡' },
         { label: 'هندسة الشبكات والأمن السيبراني', icon: '⬡' },
         { label: 'دعم IT والخدمات المُدارة', icon: '⬡' },
-        { label: 'تكامل الأنظمة وإدارة الـ API', icon: '⬡' },
+        { label: 'تكامل الأنظمة وإدارة ال API', icon: '⬡' },
       ],
       cta: 'جهّز بنيتك التحتية',
       accent: '#144033',
@@ -149,82 +149,14 @@ const servicesData = {
 };
 
 export function ServicesPage({ ar, locale }: ServicesPageProps) {
-  const services = ar ? servicesData.ar : servicesData.en;
-
-  return (
-    <div className="services-page-wrap">
-      {/* Filter bar */}
-      <div className="services-filter-bar">
-        {services.map((s) => (
-          <a key={s.id} href={`#svc-${s.id}`} className="svc-filter-pill">
-            <span className="svc-filter-num">{s.num}</span>
-            <span>{s.title}</span>
-          </a>
-        ))}
-      </div>
-
-      {/* Service cards */}
-      <div className="services-stack">
-        {services.map((svc, i) => {
-          const isEven = i % 2 === 0;
-          return (
-            <article
-              key={svc.id}
-              id={`svc-${svc.id}`}
-              className={`svc-card ${isEven ? 'svc-card--normal' : 'svc-card--reverse'}`}
-            >
-              {/* Image column */}
-              <div className="svc-card-img-col">
-                <div className="svc-card-img-wrap">
-                  <img
-                    src={svc.image}
-                    alt={svc.title}
-                    className="svc-card-img"
-                  />
-                  <div className={`svc-card-img-shade ${isEven ? 'svc-card-img-shade--end' : 'svc-card-img-shade--start'}`} />
-                  <div className="svc-card-num-badge">{svc.num}</div>
-                </div>
-              </div>
-
-              {/* Content column */}
-              <div className="svc-card-content">
-                <span className="svc-card-tag">{svc.tag}</span>
-                <h2 className="svc-card-title">{svc.title}</h2>
-                <p className="svc-card-subtitle">{svc.subtitle}</p>
-                <p className="svc-card-desc">{svc.desc}</p>
-
-                <ul className="svc-items-list">
-                  {svc.items.map((item) => (
-                    <li key={item.label}>
-                      <span className="svc-item-dot" aria-hidden="true" />
-                      {item.label}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  className="button button-primary svc-card-cta"
-                  href={`/${locale}/contact`}
-                >
-                  <span>{svc.cta}</span>
-                  <span className="btn-arrow" aria-hidden="true">↗</span>
-                </Link>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-
-      {/* Bottom CTA strip */}
-      <div className="svc-bottom-cta">
-        <p className="eyebrow">{ar ? 'خطوتك التالية' : 'NEXT STEP'}</p>
-        <h2>{ar ? 'مش متأكد من أي خدمة تحتاج؟' : 'Not sure which service fits?'}</h2>
-        <p>{ar ? 'احكيلنا عن مشروعك وهنوصّيك بالأفضل.' : 'Tell us about your project and we\'ll recommend the right path.'}</p>
-        <Link className="button button-primary" href={`/${locale}/contact`}>
-          <span>{ar ? 'ابدأ مشروعك' : 'Start a Project'}</span>
-          <span className="btn-arrow" aria-hidden="true">↗</span>
-        </Link>
-      </div>
-    </div>
-  );
+ const services = ar ? servicesData.ar : servicesData.en;
+ return <section className="service-catalog" aria-label={ar?'خدماتنا':'Our services'}>
+  <div className="service-catalog-grid">{services.map(svc=><article className="service-panel" key={svc.id} id={`svc-${svc.id}`}>
+   <img src={svc.image} alt={svc.title} width={600} height={750} loading="lazy" />
+   <div className="service-panel-body"><p className="eyebrow">{svc.tag}</p><h2>{svc.title}</h2><p>{svc.subtitle}</p>
+   <ul>{svc.items.map(item=><li key={item.label}>{item.label}</li>)}</ul>
+   <Link className="textlink" href={`/${locale}/contact`}>{svc.cta} <span aria-hidden="true">↗</span></Link></div>
+  </article>)}</div>
+  <div className="service-invitation"><div><h2>{ar?'نساعدك تختار البداية المناسبة.':'Let’s find the right starting point.'}</h2><p>{ar?'شاركنا احتياجك، ونحدد معك الخطوة التالية.':'Share what you need and we’ll help you plan the next step.'}</p></div><Link className="button" href={`/${locale}/contact`}>{ar?'تواصل معنا':'Get in touch'} ↗</Link></div>
+ </section>;
 }
