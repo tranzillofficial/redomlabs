@@ -29,6 +29,13 @@ MagicPath: Mohamed Nedaa personal workspace
 ## Remaining work
 Company inquiry delivery needs a verified destination. Mobile-menu interaction checks remain pending; desktop live routes and locale switching are verified.
 
+## Proposals & Pitch Portal Milestone, October 8, 2026
+- [x] Added interactive Client Proposal & Pitch Manager in Admin Dashboard (`/admin/[locale]/dashboard`).
+- [x] Supported custom endpoints (e.g. `/proposal/[slug]`), client name, passcode protection, and initial pricing/currency.
+- [x] Supported flexible sections with images, scope descriptions, and bullet points.
+- [x] Built dedicated secure client portal with access gate (`/proposal/[slug]`), bilingual AR/EN support, and interactive commercial breakdown.
+- [x] Full TypeScript and Next.js production build verified.
+
 ## Implementation notes
 SVG paths were reconstructed from the supplied raster contours, converted to smooth Bézier geometry in Figma and exported. The exact original vector source was not supplied. IN uses steel blue; DOM uses white on black.
 Contact currently downloads a local project brief. No inquiry is sent until company contact details and destination are configured.
@@ -159,9 +166,9 @@ Hold/depth production: 192188316e14d6540e917b72dc26ffe8e0a66662, deployment dpl_
 - [x] Record source pages, photographers and CDN URLs in src/photos.ts. Retrieved source pages label each photo free under the Unsplash License. Photos illustrate topics and do not represent Redom employees or portfolio work.
 - [ ] Publish and verify production image responses.
 
-## Approved minimal design implementation — 2026-10-07
-- Rebuild the homepage from the final owner-approved mockup: airy cream layout, quiet typography, text-only service columns, a bordered MenuzQR row, compact four-step approach and two photographic panels only.
-- Use free Unsplash desktop/notebook and hands-wireframing photos in place of the illustrative mockup photos. All actual page text remains selectable bilingual HTML.
-- Apply a one-sided CSS image mask toward the text (left in English, right in Arabic, top on stacked mobile); retain straight unframed crop boundaries on the other three sides.
-- Preserve working navigation, contact brief, AION, dark theme and reduced-motion preferences.
-- Validation: Next.js production build/TypeScript and both prerendered locale pages passed; exactly two photos. Browser visual verification remains unavailable locally.
+## Redom digital growth landing & seamless splash — 2026-10-07
+- [x] Redesigned landing page with bilingual content, 5 core sections (Hero, Expertise, Products, 4-step Approach, Panoramic CTA banner).
+- [x] Applied `border-radius: 6px` to hero artwork with directional shade fading seamlessly into background.
+- [x] Replaced kinetic SVG intro with seamless fullscreen `/splash.mp4` video (centered, zero borders/outlines/shadows, no controls or PIP artifacts, auto-play with smooth fade-out).
+- [x] Production build passed cleanly with strict TypeScript and 27 prerendered routes.
+

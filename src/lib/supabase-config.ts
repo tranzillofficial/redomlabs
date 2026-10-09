@@ -1,3 +1,2 @@
-export const supabaseUrl='https://nekzjsrheiwcxobgviuj.supabase.co';
-// Publishable key: authentication access only; never a service-role key.
-export const supabasePublicKey='sb_publishable_CpHkO6cmKbnHi3a1TKd_Cw_RK0x9L1G';
+export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'https://esastftdifqqoksylbwv.supabase.co';
+export const supabasePublicKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzYXN0ZnRkaWZxcW9rc3lsYnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NjcxMDAsImV4cCI6MjEwNzA0MzEwMH0.5-vBEtWn4zWh2-Fz99mHwhzZx7iH2JV0h6wV7T74RM8';

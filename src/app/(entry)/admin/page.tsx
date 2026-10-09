@@ -1,2 +1,2 @@
 import {redirect} from 'next/navigation';
-export default function Page(){redirect('/admin/ar/login')}
+export default function Page(){redirect('/admin/en/login')}
