@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
+import {AdminImagePicker} from './AdminImagePicker';
+import { useState, useEffect, useRef } from 'react';
 import { Proposal, ProposalSection } from '../lib/proposal-types';
 import { getAdminProposalsAction, saveProposalAction, deleteProposalAction } from '../app/(admin)/admin/[locale]/proposal-actions';
 
@@ -10,6 +11,9 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
   const [editing, setEditing] = useState<Proposal | null>(null);
   const [toast, setToast] = useState('');
   const [saving, setSaving] = useState(false);
+  const [imageBusy,setImageBusy]=useState(false);
+  const proposalDialog=useRef<HTMLDialogElement>(null);
+  useEffect(()=>{if(editing&&!proposalDialog.current?.open)proposalDialog.current?.showModal()},[editing]);
 
   useEffect(() => {
     loadProposals();
@@ -53,7 +57,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
           id: 'sec-' + Date.now() + '-1',
           title: ar ? 'نطاق العمل والهندسة البرمجية' : 'Project Scope & Architecture',
           description: ar ? 'توضيح متطلبات التطوير والتقنيات المستخدمة...' : 'Technical scope and system architecture breakdown...',
-          imageUrl: '/landing2.png',
+          imageUrl: '',
           bullets: [
             ar ? 'تصميم واجهات وتجربة مستخدم عصرية' : 'Modern responsive UI/UX design',
             ar ? 'أداء عالي وحماية بيانات متقدمة' : 'High performance & secure architecture'
@@ -68,7 +72,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (!editing) return;
+    if (!editing||imageBusy) return;
 
     if (!editing.title.trim() || !editing.clientName.trim() || !editing.slug.trim() || !editing.passcode.trim()) {
       notify(ar ? 'يرجى تعبئة الحقول الأساسية المطلوبة.' : 'Please fill all required fields.');
@@ -95,7 +99,8 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
   async function handleDelete(id: string) {
     if (!confirm(ar ? 'هل أنت متأكد من حذف هذا العرض نهائياً؟' : 'Are you sure you want to delete this proposal?')) return;
     try {
-      await deleteProposalAction(id);
+      const result=await deleteProposalAction(id);
+      if(!result.success)throw new Error();
       notify(ar ? 'تم حذف العرض.' : 'Proposal deleted.');
       await loadProposals();
     } catch {
@@ -149,9 +154,9 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
     <section className="admin-card proposal-manager-card">
       <div className="card-heading">
         <div>
-          <h2>{ar ? 'عروض ومقترحات العملاء (Proposals & Pitches)' : 'Client Proposals & Pitches'}</h2>
+          <h2>{ar ? 'عروض العملاء' : 'Client proposals'}</h2>
           <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#657b72' }}>
-            {ar ? 'إنشاء عروض تفاعلية مخصصة للعملاء بروابط مشفرة وكلمة مرور' : 'Create protected customized client proposals with private passcode links'}
+            {ar ? 'إنشاء عروض مخصصة للعملاء بروابط خاصة ورمز مرور' : 'Create protected customized client proposals with private passcode links'}
           </p>
         </div>
         <button className="button button-primary" onClick={createNewProposal}>
@@ -198,7 +203,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                 <tr key={p.id}>
                   <td>
                     <strong>{p.title || (ar ? 'بدون عنوان' : 'Untitled')}</strong>
-                    <small>👤 {p.clientName} {p.clientEmail ? `(${p.clientEmail})` : ''}</small>
+                    <small>{p.clientName} {p.clientEmail ? `(${p.clientEmail})` : ''}</small>
                   </td>
                   <td>
                     <code>/proposal/{p.slug}</code>
@@ -227,7 +232,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                         onClick={() => copyProposalLink(p.slug, p.passcode)}
                         title={ar ? 'نسخ الرابط ورمز المرور' : 'Copy link and passcode'}
                       >
-                        🔗 {ar ? 'نسخ الرابط' : 'Copy Link'}
+                        {ar ? 'نسخ الرابط' : 'Copy Link'}
                       </button>
                       <a 
                         href={`/proposal/${p.slug}`} 
@@ -236,21 +241,21 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                         className="admin-secondary" 
                         style={{ padding: '6px 12px', fontSize: '12px', textDecoration: 'none' }}
                       >
-                        👁️ {ar ? 'معاينة' : 'View'}
+                        {ar ? 'معاينة' : 'View'}
                       </a>
                       <button 
                         className="admin-secondary" 
                         style={{ padding: '6px 12px', fontSize: '12px' }}
                         onClick={() => setEditing(p)}
                       >
-                        ✏️ {ar ? 'تعديل' : 'Edit'}
+                        {ar ? 'تعديل' : 'Edit'}
                       </button>
                       <button 
                         className="admin-secondary" 
                         style={{ padding: '6px 12px', fontSize: '12px', color: '#c53030' }}
                         onClick={() => handleDelete(p.id)}
                       >
-                        🗑️
+                        {ar?'حذف':'Delete'}
                       </button>
                     </div>
                   </td>
@@ -263,10 +268,10 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
 
       {/* Proposal Edit / Create Modal */}
       {editing && (
-        <dialog open className="admin-dialog" style={{ width: '840px', maxWidth: '95vw' }}>
+        <dialog ref={proposalDialog} onCancel={e=>{e.preventDefault();if(!saving&&!imageBusy)setEditing(null)}} className="admin-dialog proposal-dialog" style={{ width: '840px', maxWidth: '95vw' }}>
           <div className="card-heading">
             <h2>{editing.id.startsWith('prop-') && !editing.title ? (ar ? 'إنشاء مقترح جديد' : 'New Proposal') : (ar ? 'تعديل بيانات المقترح' : 'Edit Proposal')}</h2>
-            <button className="dialog-close" onClick={() => setEditing(null)}>×</button>
+            <button className="dialog-close" disabled={saving||imageBusy} aria-label={ar?"إغلاق":"Close"} onClick={() => setEditing(null)}>×</button>
           </div>
 
           <form onSubmit={handleSave} style={{ maxHeight: '72vh', overflowY: 'auto', paddingRight: '6px' }}>
@@ -397,7 +402,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                         onClick={() => removeSection(sIdx)} 
                         style={{ border: 0, background: 'none', color: '#c53030', fontSize: '12px', cursor: 'pointer' }}
                       >
-                        ✕ {ar ? 'حذف القسم' : 'Remove'}
+                        {ar ? 'حذف القسم' : 'Remove'}
                       </button>
                     )}
                   </div>
@@ -424,6 +429,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                     </label>
                   </div>
 
+                  <AdminImagePicker ar={ar} crop value={sec.imageUrl||''} disabled={saving||imageBusy} onBusyChange={setImageBusy} onImages={urls=>updateSection(sIdx,'imageUrl',urls[0])}/>
                   <label style={{ marginTop: '10px' }}>
                     <span style={{ fontSize: '12px', color: '#587164' }}>{ar ? 'وصف القسم والتفاصيل' : 'Section Description & Scope'}</span>
                     <textarea 
@@ -451,10 +457,10 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
             </div>
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px', borderTop: '1px solid #dce5de', paddingTop: '16px' }}>
-              <button type="button" className="admin-secondary" onClick={() => setEditing(null)}>
+              <button type="button" className="admin-secondary" disabled={saving||imageBusy} onClick={() => setEditing(null)}>
                 {ar ? 'إلغاء' : 'Cancel'}
               </button>
-              <button type="submit" className="button button-primary" disabled={saving}>
+              <button type="submit" className="button button-primary" disabled={saving||imageBusy}>
                 {saving ? (ar ? 'جاري الحفظ...' : 'Saving...') : (ar ? 'حفظ العرض والمقترح' : 'Save Proposal')}
               </button>
             </div>
