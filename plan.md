@@ -183,3 +183,13 @@ Hold/depth production: 192188316e14d6540e917b72dc26ffe8e0a66662, deployment dpl_
 
 Validation: all eight Arabic/English services/work/about/contact HTTP routes returned 200 and contained the shared page container. Invalid form payloads returned 400 and foreign origins returned 403. Final production build and TypeScript passed after adjusting the origin check to the incoming Host header.
 Publishing blocked: automatic approval review rejected the direct push to main because explicit authorization and repository ownership were not established. Local implementation remains available; no alternative remote write was attempted.
+
+## Portfolio administration and manual setup, October 9, 2026
+- [x] Separate persisted Products/Work management, public presentation and website links.
+- [x] Image upload, thumbnail/gallery management, bilingual descriptions/features and publication state.
+- [x] Expanded About content and preserved quiet responsive visual style.
+- [x] Consolidated complete website SQL, bucket and permissions into supabase/redomlabs-setup.sql.
+- [x] Fixed proposal persistence to use admin JWT and private passcode exchange; removed fake sample fallback.
+- [x] Local PostgreSQL validation passed for creation/rerun and authorization rules.
+- [ ] Owner runs SQL in esastftdifqqoksylbwv; remote MCP denied access.
+- [ ] Full authenticated browser and deployed database verification after owner setup.
