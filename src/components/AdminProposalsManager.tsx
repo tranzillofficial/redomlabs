@@ -21,7 +21,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
       const res = await getAdminProposalsAction();
       if (res.success && res.data) {
         setProposals(res.data);
-      }
+      } else {notify(ar?'تعذر تحميل العروض. تحقق من إعداد قاعدة البيانات.':'Unable to load proposals. Check the database setup.');}
     } catch {
       // fallback
     } finally {
