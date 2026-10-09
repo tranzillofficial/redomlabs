@@ -193,3 +193,12 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Local PostgreSQL validation passed for creation/rerun and authorization rules.
 - [ ] Owner runs SQL in esastftdifqqoksylbwv; remote MCP denied access.
 - [ ] Full authenticated browser and deployed database verification after owner setup.
+
+
+## Dashboard and image composition, October 9, 2026
+- [x] Rebuilt quiet responsive administration workspace, navigation, typography, forms, tables, dialogs and login styling; removed decorative emoji, sample CRM content and fabricated counts.
+- [x] Authenticated dashboard counts from existing project/inquiry/proposal tables, with honest unavailable state.
+- [x] Shared keyboard-accessible image picker for project thumbnails, galleries and proposal sections: file selection, drop and focused clipboard paste, type/size/count validation and upload feedback.
+- [x] Native modal thumbnail editor with pointer/touch dragging, keyboard arrows, zoom, reset and cancel. Exports the chosen composition as a 1200×750 image through the existing authenticated upload action; public project covers use the same 8:5 aspect ratio.
+- [x] Chromium browser checks passed for drag/zoom/reset/cancel/export dimensions, gallery drop/paste, rejected unsupported files, Arabic RTL, mobile navigation and no horizontal overflow at 390px. Reviewed desktop dashboard and Arabic mobile settings/crop screenshots. Temporary unauthenticated review fixture removed before final build; no production auth bypass.
+- [ ] End-to-end storage persistence remains dependent on owner applying the consolidated SQL and target-project access. No extra database migration is required for thumbnail framing.
