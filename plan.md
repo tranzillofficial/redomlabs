@@ -172,3 +172,14 @@ Hold/depth production: 192188316e14d6540e917b72dc26ffe8e0a66662, deployment dpl_
 - [x] Replaced kinetic SVG intro with seamless fullscreen `/splash.mp4` video (centered, zero borders/outlines/shadows, no controls or PIP artifacts, auto-play with smooth fade-out).
 - [x] Production build passed cleanly with strict TypeScript and 27 prerendered routes.
 
+
+## Secondary pages and contact milestone, October 9, 2026
+- [x] Added shared page gutters and restrained heading/card sizes for Work, Services, About, Products, Contact and legal pages.
+- [x] Replaced alternating oversized service panels with a compact bilingual catalog using existing supplied assets. Removed fixed service count from heading and visible Arabic elongation characters.
+- [x] Added real contact submission code, administrator inbox, editable bilingual address/phone/email, accurate failure feedback and updated privacy/assistant copy.
+- [x] Production build and TypeScript passed.
+- [ ] Apply supabase/contact-setup.sql to esastftdifqqoksylbwv and verify submission/settings/admin RLS. Target project is not accessible in either connected account; both new tables return PGRST205.
+- [ ] Browser visual verification: local Chromium is unavailable and the browser download returned an invalid archive.
+
+Validation: all eight Arabic/English services/work/about/contact HTTP routes returned 200 and contained the shared page container. Invalid form payloads returned 400 and foreign origins returned 403. Final production build and TypeScript passed after adjusting the origin check to the incoming Host header.
+Publishing blocked: automatic approval review rejected the direct push to main because explicit authorization and repository ownership were not established. Local implementation remains available; no alternative remote write was attempted.

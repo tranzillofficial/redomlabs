@@ -1407,3 +1407,47 @@ button { cursor: pointer; }
   }
   .site-splash-screen { display: none; }
 }
+
+/* Calm, shared layout for secondary pages. */
+.inner-page { max-width: 1160px; margin-inline: auto; padding: 0 40px 64px; }
+.inner-page .page-heading { padding-block: 56px 32px; border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+.inner-page .page-heading h1 { font-size: clamp(28px, 3vw, 40px); line-height: 1.3; max-width: 780px; margin: 14px 0; letter-spacing: -.02em; }
+.inner-page .intro { font-size: 16px; line-height: 1.8; color: var(--muted); max-width: 640px; }
+.inner-page h2 { font-size: 24px; line-height: 1.4; }
+.inner-page h3 { font-size: 18px; }
+.inner-page .split { gap: 40px; border-top: 0; padding-top: 16px; }
+.inner-page .values { gap: 28px; margin-top: 24px; }
+.inner-page .portfolio-empty { padding: 32px; border-radius: 8px; }
+.inner-page .project { border-radius: 8px; padding: 28px; }
+.inner-page .project h2 { font-size: 28px; }
+.inner-page .button { padding: 12px 20px; font-size: 14px; border-radius: 6px; }
+.service-catalog-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.service-panel { display: grid; grid-template-columns: 150px minmax(0,1fr); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); scroll-margin-top: 100px; }
+.service-panel > img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.service-panel-body { padding: 24px; }
+.service-panel-body h2 { font-size: 21px; margin: 12px 0; }
+.service-panel-body p:not(.eyebrow) { font-size: 14px; line-height: 1.8; color: var(--muted); }
+.service-panel-body ul { margin: 20px 0; padding-inline-start: 18px; font-size: 13px; line-height: 1.7; }
+.service-panel-body li { padding-block: 4px; }
+.service-panel-body li::marker { color: var(--accent); }
+.service-panel-body .textlink { font-size: 13px; }
+.service-invitation { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 32px; margin-top: 32px; border-top: 1px solid var(--line); }
+.service-invitation h2 { font-size: 21px; }
+.service-invitation p { font-size: 14px; color: var(--muted); }
+.inner-page .contact-grid { grid-template-columns: .8fr 1fr; gap: 56px; padding-top: 8px; }
+.contact-details { margin-top: 28px; }
+.contact-details > div { padding-block: 16px; border-bottom: 1px solid var(--line); }
+.contact-details dt { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.contact-details dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.inner-page .brief { gap: 18px; }
+.contact-inquiry { padding-block: 20px; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+@media(max-width:1000px) { .service-panel { grid-template-columns: 1fr; } .service-panel > img { height: 220px; object-fit: contain; background: #f2eee7; } }
+@media(max-width:640px) {
+ .inner-page { padding-inline: 20px; padding-bottom: 40px; }
+ .inner-page .page-heading { padding-block: 36px 24px; margin-bottom: 24px; }
+ .inner-page .section { padding-block: 28px; }
+ .inner-page .split, .inner-page .values, .inner-page .contact-grid, .inner-page .projects-grid, .service-catalog-grid { grid-template-columns: 1fr; gap: 24px; }
+ .service-panel-body { padding: 22px; }
+ .service-invitation { align-items: flex-start; flex-direction: column; }
+ .inner-page .portfolio-empty { padding: 24px; }
+}

@@ -154,7 +154,7 @@ export const content: Record<Locale, ContentSchema> = {
     projectLabels: ['Hospitality'],
     projectDescriptions: ['Digital menus and restaurant tools.'],
     contactTitle: 'Tell us what you have in mind.',
-    contactText: 'Prepare a short brief to start the conversation.',
+    contactText: 'Share a few details and our team will get back to you.',
     contactSide: 'Start with the essentials.',
     contactPoints: [
       'The problem you want to solve.',
@@ -280,7 +280,7 @@ export const content: Record<Locale, ContentSchema> = {
     projectLabels: ['المطاعم والكافيهات'],
     projectDescriptions: ['منيو رقمي وأدوات للمطاعم والكافيهات.'],
     contactTitle: 'احكي لنا عن فكرتك.',
-    contactText: 'جهّز ملخص بسيط كبداية للتواصل.',
+    contactText: 'شاركنا تفاصيل بسيطة، وفريقنا هيتواصل معاك.',
     contactSide: 'ابدأ بالتفاصيل الأساسية.',
     contactPoints: [
       'المشكلة اللي محتاج تحلها.',
