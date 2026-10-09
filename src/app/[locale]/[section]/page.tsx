@@ -2,6 +2,9 @@ import {notFound,redirect} from 'next/navigation';
 import Link from 'next/link';
 import {content,Locale,sections} from '../../../content';
 import {getContactSettings} from '../../../lib/contact-service';
+import {publicProjects} from '../../../lib/project-service';
+import {ProjectCatalog} from '../../../components/ProjectCatalog';
+import {AboutPage} from '../../../components/AboutPage';
 import {Brief} from '../../../components/Brief';
 import {ServicesPage} from '../../../components/ServicesPage';
 const legal=['privacy','terms','storage'];
@@ -12,13 +15,13 @@ export default async function Page({params}:{params:Promise<{locale:string;secti
  if(![...sections,...legal].includes(section))notFound();const ar=locale==='ar',t=content[locale as Locale];
  if(legal.includes(section))return <div className="inner-page"><Legal section={section} ar={ar}/></div>;
  const contact=section==='contact'?await getContactSettings():null;
+ const projects=section==='products'||section==='work'?await publicProjects(section==='products'?'product':'work'):[];
  const title=section==='about'?t.aboutPageTitle:section==='services'?(ar?'حلول تناسب طموحك.':'Services for your next chapter.'):section==='products'?(ar?'منتجات نبنيها بأنفسنا.':'Our ideas. Our products.'):section==='work'?(ar?'أعمالنا لعملائنا.':'Work for our clients.'):t.contactTitle;
  const desc=section==='about'?t.aboutText:section==='services'?(ar?'حلول في البرمجة والتسويق والذكاء الاصطناعي وتقنية المعلومات، مصممة حول احتياجات مشروعك.':'Technology, marketing, AI, and IT — everything your digital business needs under one roof.'):section==='products'?(ar?'حلول خاصة ب REDOM LABS للتجارة والخدمات اليومية.':'REDOM LABS products for commerce and everyday services.'):section==='work'?(ar?'مساحة مخصصة للمشاريع التي ننفذها للعملاء.':'A dedicated portfolio of projects delivered for clients.'):t.contactText;
  return <div className="inner-page"><section className="page-heading section"><p className="eyebrow">{t.nav[sections.indexOf(section as typeof sections[number])+1]}</p><h1>{title}</h1><p className="intro">{desc}</p></section>
- {section==='about'&&<><section className="section split"><h2>{t.founderTitle}</h2><p>{t.founderText}</p></section><section className="section"><p className="eyebrow">{t.valuesLabel}</p><div className="values">{t.values.map(([a,b])=><div key={a}><h3>{a}</h3><p>{b}</p></div>)}</div></section></>}
+ {section==='about'&&<AboutPage ar={ar}/>}
  {section==='services'&&<ServicesPage ar={ar} locale={locale} />}
- {section==='products'&&<section className="section products-section"><div className="projects-grid">{['MenuzQR'].map((name,i)=><article key={name} className="project"><span className="eyebrow">{t.projectLabels[i]}</span><h2 dir="ltr">{name}</h2><p>{t.projectDescriptions[i]}</p><span className="project-index" aria-hidden>0{i+1}</span><details><summary>{ar?'عن المنتج':'About this product'}</summary><p>{ar?'منيو رقمي للمطاعم والكافيهات، مع إدارة الأقسام والمنتجات والأسعار.':'A digital menu for restaurants and cafés, with category, item and price management.'}</p></details></article>)}</div><p className="small collection-note">{ar?'المنتجات الخاصة بنا مستقلة عن أعمالنا لعملاء الشركة.':'Our own products are separate from our client portfolio.'}</p></section>}
- {section==='work'&&<section className="section"><div className="portfolio-empty"><p className="eyebrow">{ar?'أعمال العملاء':'Client portfolio'}</p><h2>{ar?'دراسات الحالة تُنشر هنا.':'Case studies belong here.'}</h2><p>{ar?'لا توجد دراسات حالة منشورة حاليًا. نشارك المشاريع عند توفر تفاصيلها واعتماد نشرها.':'No case studies are currently published. We share projects when their details and publication approval are available.'}</p><Link className="button" href={`/${locale}/services`}>{ar?'استكشف ما نقدمه':'Explore our services'} ↗</Link></div></section>}
+ {(section==='products'||section==='work')&&<ProjectCatalog projects={projects} ar={ar}/>}
  {section==='contact'&&<section className="section contact-grid"><aside><h2>{t.contactSide}</h2><dl className="contact-details"><div><dt>{ar?'العنوان':'Location'}</dt><dd>{ar?contact?.address_ar:contact?.address_en}</dd></div>{contact?.phone&&<div><dt>{ar?'الهاتف':'Phone'}</dt><dd><a dir="ltr" href={`tel:${contact.phone.replace(/[^+0-9]/g,'')}`}>{contact.phone}</a></dd></div>}{contact?.email&&<div><dt>{ar?'البريد الإلكتروني':'Email'}</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>}</dl></aside><Brief ar={ar}/></section>}</div>;
 }
 
