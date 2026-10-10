@@ -210,3 +210,13 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Replaced the opaque H.264 splash with the existing Redom SVG geometry on the site theme background; deleted the unused video asset.
 - [x] Letter assembly, brief hold and page reveal finish within 1500 ms, with document-level replay, internal-navigation continuity and timer/scroll cleanup.
 - [x] Production build/TypeScript passed after clearing corrupt generated Turbopack cache. Chromium measured 1499 ms and verified no video requests, desktop/mobile visuals, Arabic RTL, internal navigation, refresh replay, reduced motion, no-JavaScript access and scroll restoration.
+
+
+## Inquiry deletion and contact publishing, October 10, 2026
+- [x] Added explicit inquiry deletion confirmation, per-row pending state and accurate failure feedback. The authenticated action validates identifiers and requires an actual deleted row; RLS grants DELETE only to admin app metadata.
+- [x] Added stable cursor loading of older inquiries, with created_at/id ordering and matching index, so administration is not limited to the latest 100 messages.
+- [x] Added optional bilingual address details and eight optional HTTPS social page links, retaining editable phone/email/location. Published links appear on Contact and in the footer; removed generic placeholder social destinations.
+- [x] Footer loads public settings in the background, retaining the static public page shell. Settings saves revalidate both locale layouts.
+- [x] Updated the complete rerunnable SQL with additive settings columns, inquiry DELETE grant/policy and pagination index.
+- [x] PGlite checked previous-schema upgrade, rerun preservation, admin deletion and denial for nonadmins/anonymous users. URL/payload validation checks passed. Chromium checked settings, cancel/failure/success deletion, mobile RTL and footer links through temporary dependency fixtures; fixtures removed before final production build.
+- [ ] Owner applies updated supabase/redomlabs-setup.sql in target project; live authenticated persistence still unverified because target access is unavailable.

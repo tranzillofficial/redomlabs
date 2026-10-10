@@ -1476,3 +1476,6 @@ button { cursor: pointer; }
 
 /* Thumbnail editor and published cards share the same framing. */
 .portfolio-cover { display: block; height: auto; aspect-ratio: 8 / 5; object-fit: cover; }
+
+/* Published administrator-managed contact details. */
+.contact-social-links{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}.contact-social-links a{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:5px;padding:8px 12px;font-size:12px;line-height:1.5;color:var(--ink);text-decoration:none}.contact-social-links a:hover{background:var(--soft)}.contact-social-links a span[aria-hidden]{font-size:11px;color:var(--muted)}.address-details{white-space:pre-line;margin:8px 0 0;font-size:14px;color:var(--muted)}.footer-contact{display:grid;gap:14px;max-width:320px;align-content:start}.footer-contact .contact-social-links{margin:0;gap:8px}.footer-phone,.footer-contact-link{font-size:13px;color:var(--muted);text-decoration:none;justify-self:start}.footer-contact-link{color:var(--ink)}
