@@ -220,3 +220,9 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Updated the complete rerunnable SQL with additive settings columns, inquiry DELETE grant/policy and pagination index.
 - [x] PGlite checked previous-schema upgrade, rerun preservation, admin deletion and denial for nonadmins/anonymous users. URL/payload validation checks passed. Chromium checked settings, cancel/failure/success deletion, mobile RTL and footer links through temporary dependency fixtures; fixtures removed before final production build.
 - [ ] Owner applies updated supabase/redomlabs-setup.sql in target project; live authenticated persistence still unverified because target access is unavailable.
+
+
+## Redom browser icons, October 10, 2026
+- [x] Added a standalone custom R mark in turquoise on a forest rounded square, preserving the brand geometry and remaining legible at browser-tab sizes.
+- [x] Added root Next.js icon.svg, a 16/32/48px favicon.ico, and a 180px apple-icon.png for public, administration and proposal routes.
+- [x] Production build and generated icon metadata verified.
