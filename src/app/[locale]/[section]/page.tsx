@@ -1,6 +1,7 @@
 import {notFound,redirect} from 'next/navigation';
 import Link from 'next/link';
 import {content,Locale,sections} from '../../../content';
+import {SocialLinks} from '../../../components/SocialLinks';
 import {getContactSettings} from '../../../lib/contact-service';
 import {publicProjects} from '../../../lib/project-service';
 import {ProjectCatalog} from '../../../components/ProjectCatalog';
@@ -22,7 +23,7 @@ export default async function Page({params}:{params:Promise<{locale:string;secti
  {section==='about'&&<AboutPage ar={ar}/>}
  {section==='services'&&<ServicesPage ar={ar} locale={locale} />}
  {(section==='products'||section==='work')&&<ProjectCatalog projects={projects} ar={ar}/>}
- {section==='contact'&&<section className="section contact-grid"><aside><h2>{t.contactSide}</h2><dl className="contact-details"><div><dt>{ar?'العنوان':'Location'}</dt><dd>{ar?contact?.address_ar:contact?.address_en}</dd></div>{contact?.phone&&<div><dt>{ar?'الهاتف':'Phone'}</dt><dd><a dir="ltr" href={`tel:${contact.phone.replace(/[^+0-9]/g,'')}`}>{contact.phone}</a></dd></div>}{contact?.email&&<div><dt>{ar?'البريد الإلكتروني':'Email'}</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>}</dl></aside><Brief ar={ar}/></section>}</div>;
+ {section==='contact'&&<section className="section contact-grid"><aside><h2>{t.contactSide}</h2><dl className="contact-details"><div><dt>{ar?'العنوان':'Location'}</dt><dd>{ar?contact?.address_ar:contact?.address_en}{(ar?contact?.address_details_ar:contact?.address_details_en)&&<p className="address-details">{ar?contact?.address_details_ar:contact?.address_details_en}</p>}</dd></div>{contact?.phone&&<div><dt>{ar?'الهاتف':'Phone'}</dt><dd><a dir="ltr" href={`tel:${contact.phone.replace(/[^+0-9]/g,'')}`}>{contact.phone}</a></dd></div>}{contact?.email&&<div><dt>{ar?'البريد الإلكتروني':'Email'}</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>}</dl><SocialLinks links={contact?.social_links} ar={ar}/></aside><Brief ar={ar}/></section>}</div>;
 }
 
 function Legal({section,ar}:{section:string;ar:boolean}){
