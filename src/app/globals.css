@@ -760,51 +760,45 @@ button { cursor: pointer; }
   pointer-events: none;
 }
 
-/* Splash Video Entrance Screen (No borders, pure seamless centered animation) */
+/* Theme-aware SVG entrance: assembly, hold and exit within 1.5 seconds. */
 .site-splash-screen {
   position: fixed;
   inset: 0;
   z-index: 200;
   background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   pointer-events: none;
-  transition: opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.45s;
 }
-.splash-video-container {
-  width: min(88vw, 760px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+.splash-logo { width: min(70vw, 420px); direction: ltr; }
+.site-splash-screen .letter { visibility: hidden; }
+.splash-running { animation: splash-exit 1500ms ease-in-out both; }
+.splash-running .letter {
+  visibility: visible;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: splash-glyph 520ms cubic-bezier(.2,.7,.25,1) both;
 }
-.splash-video {
-  width: 100%;
-  height: auto;
-  max-height: 80vh;
-  object-fit: contain;
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
+.splash-running .letter-I { animation-delay: 0ms; }
+.splash-running .letter-N { animation-delay: 90ms; }
+.splash-running .letter-D { animation-delay: 180ms; }
+.splash-running .letter-O { animation-delay: 270ms; }
+.splash-running .letter-M { animation-delay: 360ms; }
+.splash-running .letter-signature { animation-delay: 440ms; }
+@keyframes splash-glyph {
+  from { opacity: 0; transform: translateY(12px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.splash-video::-webkit-media-controls,
-.splash-video::-webkit-media-controls-enclosure,
-.splash-video::-webkit-media-controls-panel {
-  display: none !important;
-  -webkit-appearance: none;
-  opacity: 0 !important;
+@keyframes splash-exit {
+  0%, 83.333% { opacity: 1; }
+  100% { opacity: 0; }
 }
-.splash-fade-out {
-  opacity: 0;
-  visibility: hidden;
-}
-.entrance-waiting {
-  visibility: hidden;
+.entrance-waiting { visibility: hidden; }
+.splash-running + .entrance-waiting { animation: splash-page-reveal 1500ms ease-in-out both; }
+@keyframes splash-page-reveal {
+  0%, 83.333% { visibility: hidden; opacity: 0; }
+  83.334% { visibility: visible; opacity: 0; }
+  100% { visibility: visible; opacity: 1; }
 }
 
 /* Site Footer */
@@ -1406,6 +1400,7 @@ button { cursor: pointer; }
     transition: none !important;
   }
   .site-splash-screen { display: none; }
+  .entrance-waiting { visibility: visible; }
 }
 
 /* Calm, shared layout for secondary pages. */
