@@ -14,6 +14,10 @@ create table if not exists public.contact_settings (
  phone text not null default '' check(length(phone)<=40),
  email text not null default '' check(length(email)<=254)
 );
+-- Upgrade existing contact settings without replacing saved contact details.
+alter table public.contact_settings add column if not exists address_details_en text not null default '' check(length(address_details_en)<=500);
+alter table public.contact_settings add column if not exists address_details_ar text not null default '' check(length(address_details_ar)<=500);
+alter table public.contact_settings add column if not exists social_links jsonb not null default '{}'::jsonb check(jsonb_typeof(social_links)='object');
 insert into public.contact_settings(id) values(1) on conflict(id) do nothing;
 alter table public.contact_settings enable row level security;
 grant select on public.contact_settings to anon,authenticated;
@@ -34,6 +38,7 @@ create table if not exists public.contact_inquiries (
  created_at timestamptz not null default now()
 );
 create index if not exists contact_inquiries_created_at on public.contact_inquiries(created_at desc);
+create index if not exists contact_inquiries_page_order on public.contact_inquiries(created_at desc,id desc);
 alter table public.contact_inquiries enable row level security;
 grant insert(name,email,project_type,message,locale) on public.contact_inquiries to anon,authenticated;
 grant select on public.contact_inquiries to authenticated;
@@ -41,6 +46,11 @@ drop policy if exists "Submit contact inquiry" on public.contact_inquiries;
 create policy "Submit contact inquiry" on public.contact_inquiries for insert to anon,authenticated with check(true);
 drop policy if exists "Admin inquiry inbox" on public.contact_inquiries;
 create policy "Admin inquiry inbox" on public.contact_inquiries for select to authenticated using((select auth.jwt()->'app_metadata'->>'indom_admin')='true');
+
+-- Only verified administrators may permanently remove an inquiry.
+grant delete on public.contact_inquiries to authenticated;
+drop policy if exists "Admin inquiry delete" on public.contact_inquiries;
+create policy "Admin inquiry delete" on public.contact_inquiries for delete to authenticated using((select auth.jwt()->'app_metadata'->>'indom_admin')='true');
 
 
 -- 2. Products and approved client work.
