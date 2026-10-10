@@ -226,3 +226,8 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Added a standalone custom R mark in turquoise on a forest rounded square, preserving the brand geometry and remaining legible at browser-tab sizes.
 - [x] Added root Next.js icon.svg, a 16/32/48px favicon.ico, and a 180px apple-icon.png for public, administration and proposal routes.
 - [x] Production build and generated icon metadata verified.
+
+
+## Preserve Redom Labs name, October 10, 2026
+- [x] Protected navbar/footer brand links and shared SVG brand with translate=no, notranslate and English language markers so browser translation preserves LABS in both locales.
+- [x] Production build and Arabic/English rendered HTML checks passed. Attribute-only change preserves existing layout and SVG geometry; local Chromium could not launch for visual verification.

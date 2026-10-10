@@ -33,7 +33,7 @@ export default async function Layout({ children, params }: { children: React.Rea
       <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeScript }} />
       <SiteEntrance><a className="skip" href="#main">{t.skip}</a>
       <header className="site-header"><div className="header-inner">
-        <Link href={`/${l}`} className="navbrand" aria-label="Redom Labs"><Brand compact /><span>LABS</span></Link>
+        <Link href={`/${l}`} className="navbrand notranslate" translate="no" lang="en" aria-label="Redom Labs"><Brand compact /><span>LABS</span></Link>
         <Navigation locale={l} />
         <div className="header-tools"><LanguageLink locale={l} /><ThemeToggle ar={l === 'ar'} /><Link className="nav-cta" href={`/${l}/contact`}>{t.start}<span aria-hidden="true">↗</span></Link></div>
       </div></header>
@@ -41,7 +41,7 @@ export default async function Layout({ children, params }: { children: React.Rea
       <footer className="site-footer">
         <div className="footer-top">
           <div className="footer-brand-wrap">
-            <Link href={`/${l}`} className="footer-brand" aria-label="Redom Labs">
+            <Link href={`/${l}`} className="footer-brand notranslate" translate="no" lang="en" aria-label="Redom Labs">
               <Brand compact />
               <span>LABS</span>
             </Link>
