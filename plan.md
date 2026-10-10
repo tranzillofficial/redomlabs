@@ -204,3 +204,9 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Updated login identity and removed the obsolete prototype notice and assistant mark.
 - [x] Chromium browser checks passed for drag/zoom/reset/cancel/export dimensions, gallery drop/paste, rejected unsupported files, Arabic RTL, mobile navigation and no horizontal overflow at 390px. Reviewed desktop dashboard and Arabic mobile settings/crop screenshots. Temporary unauthenticated review fixture removed before final build; no production auth bypass.
 - [ ] End-to-end storage persistence remains dependent on owner applying the consolidated SQL and target-project access. No extra database migration is required for thumbnail framing.
+
+
+## Short SVG splash, October 10, 2026
+- [x] Replaced the opaque H.264 splash with the existing Redom SVG geometry on the site theme background; deleted the unused video asset.
+- [x] Letter assembly, brief hold and page reveal finish within 1500 ms, with document-level replay, internal-navigation continuity and timer/scroll cleanup.
+- [x] Production build/TypeScript passed after clearing corrupt generated Turbopack cache. Chromium measured 1499 ms and verified no video requests, desktop/mobile visuals, Arabic RTL, internal navigation, refresh replay, reduced motion, no-JavaScript access and scroll restoration.
