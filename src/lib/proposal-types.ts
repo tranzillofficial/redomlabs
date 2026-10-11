@@ -2,6 +2,12 @@ export interface ProposalSection {
   id: string;
   title: string;
   description: string;
+  titleEn?: string;
+  descriptionEn?: string;
+  bulletsEn?: string[];
+  startingPrice?: number;
+  billing?: 'once' | 'annual' | 'monthly';
+  optional?: boolean;
   imageUrl?: string;
   bullets?: string[];
 }

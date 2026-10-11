@@ -139,7 +139,7 @@ begin
  select to_jsonb(p)-'passcode'-'client_email' into result
  from public.proposals p
  where p.slug=requested_slug and p.passcode=entered_passcode
- and p.status='active' and (p.valid_until is null or p.valid_until>=current_date)
+ and p.status='active' and (nullif(p.valid_until::text,'') is null or nullif(p.valid_until::text,'')::date>=current_date)
  limit 1;
  return result;
 end;

@@ -231,3 +231,12 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 ## Preserve Redom Labs name, October 10, 2026
 - [x] Protected navbar/footer brand links and shared SVG brand with translate=no, notranslate and English language markers so browser translation preserves LABS in both locales.
 - [x] Production build and Arabic/English rendered HTML checks passed. Attribute-only change preserves existing layout and SVG geometry; local Chromium could not launch for visual verification.
+
+## Belmir Coffee proposal, October 11, 2026
+- [x] Persist protected bilingual Belmir Coffee proposal in the existing proposals table; credentials are stored only in the database.
+- [x] Add editable per-section starting price, billing cadence, optional flag and English copy.
+- [x] Calculate base first-year, selected one-time, annual and monthly totals from section prices; preserve unpriced legacy proposals.
+- [x] Refresh bilingual responsive password gate, concealed password/reveal, and remove stale proposal content caching from sessionStorage.
+- [x] Generate and review six coordinated concept images; optimize as WebP for proposal sections.
+- [x] Production build and TypeScript passed; live visual/authentication checks follow publication.
+- [x] Fix pre-existing text/date mismatch in private proposal expiry RPC; apply migration and preserve authorization/redaction.

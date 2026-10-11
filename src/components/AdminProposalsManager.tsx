@@ -1,6 +1,7 @@
 'use client';
 import {AdminImagePicker} from './AdminImagePicker';
 import { useState, useEffect, useRef } from 'react';
+import {proposalTotals} from '../lib/proposal-pricing';
 import { Proposal, ProposalSection } from '../lib/proposal-types';
 import { getAdminProposalsAction, saveProposalAction, deleteProposalAction } from '../app/(admin)/admin/[locale]/proposal-actions';
 
@@ -337,9 +338,10 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginTop: '14px' }}>
               <label>
-                <strong>{ar ? 'السعر المبدئي / الإجمالي' : 'Initial Price'}</strong>
+                <strong>{ar ? 'إجمالي البداية (يُحسب من البنود المسعّرة)' : 'Base total (calculated from priced sections)'}</strong>
                 <input 
-                  value={editing.initialPrice} 
+                  readOnly={editing.sections.some(s=>s.startingPrice!==undefined)}
+                  value={editing.sections.some(s=>s.startingPrice!==undefined)?String(proposalTotals(editing.sections).baseFirstYear):editing.initialPrice} 
                   onChange={e => setEditing({ ...editing, initialPrice: e.target.value })} 
                   placeholder={ar ? 'مثال: 35,000' : 'e.g. 35,000'} 
                 />
@@ -429,6 +431,16 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                     </label>
                   </div>
 
+                  <div className="proposal-admin-prices">
+                    <label>{ar?'السعر يبدأ من':'Starting price'}<input type="number" min="0" step="1" value={sec.startingPrice ?? ''} onChange={e=>updateSection(sIdx,'startingPrice',e.target.value===''?undefined:Number(e.target.value))}/></label>
+                    <label>{ar?'طريقة الدفع':'Billing'}<select value={sec.billing||'once'} onChange={e=>updateSection(sIdx,'billing',e.target.value)}><option value="once">{ar?'مرة واحدة':'One-time'}</option><option value="annual">{ar?'سنوي':'Annual'}</option><option value="monthly">{ar?'شهري':'Monthly'}</option></select></label>
+                    <label><input type="checkbox" checked={!!sec.optional} onChange={e=>updateSection(sIdx,'optional',e.target.checked)}/>{ar?'إضافة اختيارية خارج إجمالي البداية':'Optional, excluded from base total'}</label>
+                  </div>
+                  <details><summary>{ar?'النص الإنجليزي':'English copy'}</summary>
+                    <label>English title<input value={sec.titleEn||''} onChange={e=>updateSection(sIdx,'titleEn',e.target.value)}/></label>
+                    <label>English description<textarea value={sec.descriptionEn||''} onChange={e=>updateSection(sIdx,'descriptionEn',e.target.value)}/></label>
+                    <label>English bullets<textarea value={(sec.bulletsEn||[]).join('\n')} onChange={e=>updateSection(sIdx,'bulletsEn',e.target.value.split('\n').filter(Boolean))}/></label>
+                  </details>
                   <AdminImagePicker ar={ar} crop value={sec.imageUrl||''} disabled={saving||imageBusy} onBusyChange={setImageBusy} onImages={urls=>updateSection(sIdx,'imageUrl',urls[0])}/>
                   <label style={{ marginTop: '10px' }}>
                     <span style={{ fontSize: '12px', color: '#587164' }}>{ar ? 'وصف القسم والتفاصيل' : 'Section Description & Scope'}</span>

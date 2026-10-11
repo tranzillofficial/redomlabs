@@ -1,6 +1,7 @@
 'use server';
 import { currentAdmin } from '../../../../lib/admin-auth';
 import { fetchProposals, saveProposal, deleteProposal, unlockProposal } from '../../../../lib/proposal-service';
+import {proposalTotals} from '../../../../lib/proposal-pricing';
 import { Proposal } from '../../../../lib/proposal-types';
 
 export async function getAdminProposalsAction() {
@@ -17,9 +18,12 @@ export async function saveProposalAction(proposal: Proposal) {
     return { success: false, error: 'Missing required fields' };
   }
 
+  if(proposal.sections.some(s=>s.startingPrice!==undefined&&(!Number.isFinite(s.startingPrice)||s.startingPrice<0)||s.billing&&!["once","annual","monthly"].includes(s.billing))) return {success:false,error:'Invalid pricing'};
+
   // Ensure clean slug
   proposal.slug = proposal.slug.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-');
 
+  if(proposal.sections.some(s=>s.startingPrice!==undefined))proposal.initialPrice=String(proposalTotals(proposal.sections).baseFirstYear);
   const res = await saveProposal(proposal);
   return res;
 }
