@@ -248,3 +248,5 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Add three bilingual marketing packages at 1,200/2,500/4,500 monthly and Custom, with matching proposal links and scope.
 - [x] Remove customer option selection and offer expiry display; clear Belmir expiration. Show base 7,700 with one-time/annual breakdown and separate annual-system scenario.
 - [x] Reduce proposal navbar logo width to 150px desktop / 120px mobile.
+
+- [x] Restore interior spacing to the proposal introduction card: 36px horizontal desktop and 20px mobile, with the summary and highlights inset consistently.
