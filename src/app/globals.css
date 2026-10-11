@@ -1479,3 +1479,7 @@ button { cursor: pointer; }
 
 /* Published administrator-managed contact details. */
 .contact-social-links{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}.contact-social-links a{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:5px;padding:8px 12px;font-size:12px;line-height:1.5;color:var(--ink);text-decoration:none}.contact-social-links a:hover{background:var(--soft)}.contact-social-links a span[aria-hidden]{font-size:11px;color:var(--muted)}.address-details{white-space:pre-line;margin:8px 0 0;font-size:14px;color:var(--muted)}.footer-contact{display:grid;gap:14px;max-width:320px;align-content:start}.footer-contact .contact-social-links{margin:0;gap:8px}.footer-phone,.footer-contact-link{font-size:13px;color:var(--muted);text-decoration:none;justify-self:start}.footer-contact-link{color:var(--ink)}
+
+.marketing-packages{scroll-margin-top:100px}.marketing-packages .packages-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:24px}.marketing-package-price{font-size:22px;line-height:1.5}.marketing-package-terms{font-size:13px;line-height:1.8;color:var(--muted)}
+@media(max-width:1000px){.marketing-packages .packages-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.marketing-packages .packages-grid{grid-template-columns:1fr}}

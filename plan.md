@@ -240,3 +240,11 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Generate and review six coordinated concept images; optimize as WebP for proposal sections.
 - [x] Production build and TypeScript passed; live visual/authentication checks follow publication.
 - [x] Fix pre-existing text/date mismatch in private proposal expiry RPC; apply migration and preserve authorization/redaction.
+
+## Belmir offer revisions and marketing packages
+- [x] Update hosting to EGP 3,200 annually; include the website menu at no additional charge.
+- [x] Include table/bar/kitchen/cashier ordering with the system subscription (100/month or promotional 1,000/year).
+- [x] Read current Genaan packages/care settings: from 4,000; annual care 1,200 for two or 2,200 for four visits. Merge care into Genaan section.
+- [x] Add three bilingual marketing packages at 1,200/2,500/4,500 monthly and Custom, with matching proposal links and scope.
+- [x] Remove customer option selection and offer expiry display; clear Belmir expiration. Show base 7,700 with one-time/annual breakdown and separate annual-system scenario.
+- [x] Reduce proposal navbar logo width to 150px desktop / 120px mobile.

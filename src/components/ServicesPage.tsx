@@ -1,3 +1,4 @@
+import {MarketingPackages} from './MarketingPackages';
 import Link from 'next/link';
 
 interface ServicesPageProps {
@@ -157,6 +158,7 @@ export function ServicesPage({ ar, locale }: ServicesPageProps) {
    <ul>{svc.items.map(item=><li key={item.label}>{item.label}</li>)}</ul>
    <Link className="textlink" href={`/${locale}/contact`}>{svc.cta} <span aria-hidden="true">↗</span></Link></div>
   </article>)}</div>
+  <MarketingPackages ar={ar} locale={locale}/>
   <div className="service-invitation"><div><h2>{ar?'نساعدك تختار البداية المناسبة.':'Let’s find the right starting point.'}</h2><p>{ar?'شاركنا احتياجك، ونحدد معك الخطوة التالية.':'Share what you need and we’ll help you plan the next step.'}</p></div><Link className="button" href={`/${locale}/contact`}>{ar?'تواصل معنا':'Get in touch'} ↗</Link></div>
  </section>;
 }

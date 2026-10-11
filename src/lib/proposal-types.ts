@@ -5,6 +5,10 @@ export interface ProposalSection {
   titleEn?: string;
   descriptionEn?: string;
   bulletsEn?: string[];
+  priceLabelAr?: string;
+  priceLabelEn?: string;
+  detailsUrl?: string;
+  detailsUrlEn?: string;
   startingPrice?: number;
   billing?: 'once' | 'annual' | 'monthly';
   optional?: boolean;
