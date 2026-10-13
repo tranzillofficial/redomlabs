@@ -1,4 +1,9 @@
 export interface ProposalSection {
+  catalog?: boolean;
+  enabled?: boolean;
+  defaultBusinessType?: "restaurant" | "company" | "store" | "other";
+  monthlyPrice?: number;
+  businessVariants?: Partial<Record<"restaurant" | "company" | "store" | "other", {startingPrice?:number;bullets?:string[];bulletsEn?:string[]}>>;
   id: string;
   title: string;
   description: string;

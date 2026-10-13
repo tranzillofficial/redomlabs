@@ -1,11 +1,15 @@
 'use client';
+import {createServiceCatalog,businessTypes,isCatalog,catalogTotals,type BusinessType} from '../lib/proposal-catalog';
+import type {ProposalRequest} from '../lib/proposal-request-types';
 import {AdminImagePicker} from './AdminImagePicker';
 import { useState, useEffect, useRef } from 'react';
 import {proposalTotals} from '../lib/proposal-pricing';
 import { Proposal, ProposalSection } from '../lib/proposal-types';
-import { getAdminProposalsAction, saveProposalAction, deleteProposalAction } from '../app/(admin)/admin/[locale]/proposal-actions';
+import { getAdminProposalsAction, saveProposalAction, deleteProposalAction, getProposalRequestsAction } from '../app/(admin)/admin/[locale]/proposal-actions';
 
 export function AdminProposalsManager({ ar }: { ar: boolean }) {
+  const [requests,setRequests]=useState<ProposalRequest[]>([]);
+  const [requestError,setRequestError]=useState(false);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -18,6 +22,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
 
   useEffect(() => {
     loadProposals();
+    getProposalRequestsAction().then(r=>{setRequests(r.data);setRequestError(!r.success)});
   }, []);
 
   async function loadProposals() {
@@ -109,9 +114,15 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
     }
   }
 
+  function createGeneralProposal(){
+    const now=new Date().toISOString();
+    setEditing({id:crypto.randomUUID(),slug:'offer-'+Date.now(),title:'العرض العام للخدمات || Service proposal',clientName:'',passcode:'',summary:'اختَر الخدمات التي تحتاجها وسنعد لك عرضًا مناسبًا لنشاطك. || Choose the services you need and we will prepare a quote for your business.',initialPrice:'',currency:'EGP',status:'active',sections:createServiceCatalog(),createdAt:now,updatedAt:now});
+  }
+
   function addSection() {
     if (!editing) return;
     const newSec: ProposalSection = {
+      catalog:isCatalog(editing.sections),enabled:true,
       id: 'sec-' + Date.now() + '-' + Math.random().toString(36).substring(2, 5),
       title: ar ? 'قسم جديد' : 'New Section',
       description: '',
@@ -135,6 +146,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
     if (!editing) return;
     const next = [...editing.sections];
     next[index] = { ...next[index], [key]: value };
+    if(key==='startingPrice'&&next[index].businessVariants){const business=next[index].defaultBusinessType||'restaurant';next[index].businessVariants={...next[index].businessVariants,[business]:{...next[index].businessVariants?.[business],startingPrice:value}}}
     setEditing({ ...editing, sections: next });
   }
 
@@ -145,8 +157,8 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
     notify(ar ? 'تم نسخ الرابط ورمز المرور إلى الحافظة 📋' : 'Link and passcode copied to clipboard 📋');
   }
 
-  const filtered = proposals.filter(p => 
-    p.title.toLowerCase().includes(search.toLowerCase()) || 
+  const filtered = proposals.filter(p =>
+    p.title.toLowerCase().includes(search.toLowerCase()) ||
     p.clientName.toLowerCase().includes(search.toLowerCase()) ||
     p.slug.toLowerCase().includes(search.toLowerCase())
   );
@@ -168,14 +180,15 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', margin: '20px 0' }}>
         <label className="admin-search" style={{ margin: 0, flex: 1, maxWidth: '400px' }}>
           <span className="sr-only">{ar ? 'بحث بالعروض' : 'Search proposals'}</span>
-          <input 
-            placeholder={ar ? 'بحث بالعنوان أو العميل أو الرابط...' : 'Search by title, client or slug...'} 
-            value={search} 
-            onChange={e => setSearch(e.target.value)} 
+          <input
+            placeholder={ar ? 'بحث بالعنوان أو العميل أو الرابط...' : 'Search by title, client or slug...'}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
         </label>
       </div>
 
+      <button type="button" className="admin-primary" style={{margin:'16px 0'}} onClick={createGeneralProposal}>{ar?'+ إنشاء عرض خدمات عام':'+ New service catalog proposal'}</button>
       {loading ? (
         <div style={{ padding: '30px', textAlign: 'center', color: '#88978f' }}>
           {ar ? 'جاري تحميل العروض...' : 'Loading proposals...'}
@@ -227,32 +240,32 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                   </td>
                   <td style={{ textAlign: 'end' }}>
                     <div style={{ display: 'inline-flex', gap: '8px' }}>
-                      <button 
-                        className="admin-secondary" 
+                      <button
+                        className="admin-secondary"
                         style={{ padding: '6px 12px', fontSize: '12px' }}
                         onClick={() => copyProposalLink(p.slug, p.passcode)}
                         title={ar ? 'نسخ الرابط ورمز المرور' : 'Copy link and passcode'}
                       >
                         {ar ? 'نسخ الرابط' : 'Copy Link'}
                       </button>
-                      <a 
-                        href={`/proposal/${p.slug}`} 
-                        target="_blank" 
+                      <a
+                        href={`/proposal/${p.slug}`}
+                        target="_blank"
                         rel="noreferrer"
-                        className="admin-secondary" 
+                        className="admin-secondary"
                         style={{ padding: '6px 12px', fontSize: '12px', textDecoration: 'none' }}
                       >
                         {ar ? 'معاينة' : 'View'}
                       </a>
-                      <button 
-                        className="admin-secondary" 
+                      <button
+                        className="admin-secondary"
                         style={{ padding: '6px 12px', fontSize: '12px' }}
                         onClick={() => setEditing(p)}
                       >
                         {ar ? 'تعديل' : 'Edit'}
                       </button>
-                      <button 
-                        className="admin-secondary" 
+                      <button
+                        className="admin-secondary"
                         style={{ padding: '6px 12px', fontSize: '12px', color: '#c53030' }}
                         onClick={() => handleDelete(p.id)}
                       >
@@ -267,6 +280,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
         </div>
       )}
 
+      <section className="admin-card" style={{marginTop:24}}><div className="card-heading"><h2>{ar?'طلبات عروض مخصصة':'Custom quote requests'}</h2><button type="button" className="admin-secondary" onClick={()=>getProposalRequestsAction().then(r=>{setRequests(r.data);setRequestError(!r.success)})}>{ar?'تحديث':'Refresh'}</button></div>{requestError&&<p role="alert">{ar?'تعذر تحميل الطلبات.':'Unable to load requests.'}</p>}{!requestError&&!requests.length&&<p>{ar?'لا توجد طلبات حتى الآن.':'No requests yet.'}</p>}{requests.map(r=><article className="contact-inquiry" key={r.id}><h3>{r.client_name} · {r.contact_name}</h3><a href={`tel:${r.phone.replace(/[^+0-9]/g,'')}`} dir="ltr">{r.phone}</a><p>{r.proposal_slug} · {businessTypes.find(b=>b.id===r.business_type)?.[ar?'ar':'en']} · {new Date(r.created_at).toLocaleString(ar?'ar-EG':'en-GB')}</p><ul>{r.sections.map(section=><li key={section.id}>{ar?section.title:section.titleEn||section.title} — {section.startingPrice??0} {r.currency} ({section.billing||'once'}){section.monthlyPrice!==undefined?` + ${section.monthlyPrice} ${r.currency} / ${ar?'شهر':'month'}`:''}</li>)}</ul><p style={{whiteSpace:'pre-wrap'}}>{r.notes}</p><small>{ar?'تقدير أول سنة':'First-year estimate'}: {catalogTotals(r.sections).firstYear.toLocaleString()} {r.currency}</small></article>)}</section>
       {/* Proposal Edit / Create Modal */}
       {editing && (
         <dialog ref={proposalDialog} onCancel={e=>{e.preventDefault();if(!saving&&!imageBusy)setEditing(null)}} className="admin-dialog proposal-dialog" style={{ width: '840px', maxWidth: '95vw' }}>
@@ -276,24 +290,25 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
           </div>
 
           <form onSubmit={handleSave} style={{ maxHeight: '72vh', overflowY: 'auto', paddingRight: '6px' }}>
+            <div style={{marginBottom:20}}><strong>{ar?'نوع العرض':'Proposal type'}</strong><p>{isCatalog(editing.sections)?(ar?'عرض خدمات عام — العميل يختار خدماته ويرسل طلب عرض مخصص':'Service catalog — client selects services and requests a quote'):(ar?'عرض مخصص بالتفاصيل الحالية':'Existing detailed proposal')}</p>{!isCatalog(editing.sections)&&<button type="button" className="admin-secondary" onClick={()=>{if(confirm(ar?'استبدال الأقسام الحالية بكتالوج الخدمات؟':'Replace current sections with the service catalog?'))setEditing({...editing,sections:createServiceCatalog(),currency:'EGP'})}}>{ar?'استخدام كتالوج الخدمات':'Use service catalog'}</button>}{isCatalog(editing.sections)&&<label>{ar?'النشاط الافتراضي':'Default business'}<select value={editing.sections.find(s=>s.catalog)?.defaultBusinessType||'restaurant'} onChange={e=>setEditing({...editing,sections:editing.sections.map(s=>({...s,defaultBusinessType:e.target.value as BusinessType}))})}>{businessTypes.map(b=><option key={b.id} value={b.id}>{ar?b.ar:b.en}</option>)}</select></label>}</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <label>
                 <strong>{ar ? 'عنوان العرض / المشروع *' : 'Proposal Title *'}</strong>
-                <input 
-                  required 
-                  value={editing.title} 
-                  onChange={e => setEditing({ ...editing, title: e.target.value })} 
-                  placeholder={ar ? 'مثال: تطوير منصة التجارة والتطبيق الذكي' : 'e.g. E-Commerce Platform & Mobile App'} 
+                <input
+                  required
+                  value={editing.title}
+                  onChange={e => setEditing({ ...editing, title: e.target.value })}
+                  placeholder={ar ? 'مثال: تطوير منصة التجارة والتطبيق الذكي' : 'e.g. E-Commerce Platform & Mobile App'}
                 />
               </label>
 
               <label>
                 <strong>{ar ? 'اسم العميل / الجهة *' : 'Client / Company Name *'}</strong>
-                <input 
-                  required 
-                  value={editing.clientName} 
-                  onChange={e => setEditing({ ...editing, clientName: e.target.value })} 
-                  placeholder={ar ? 'مثال: شركة الرؤية المتقدمة' : 'e.g. Vision Co.'} 
+                <input
+                  required
+                  value={editing.clientName}
+                  onChange={e => setEditing({ ...editing, clientName: e.target.value })}
+                  placeholder={ar ? 'مثال: شركة الرؤية المتقدمة' : 'e.g. Vision Co.'}
                 />
               </label>
             </div>
@@ -303,54 +318,54 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                 <strong>{ar ? 'نهاية الرابط (Slug) *' : 'URL Endpoint (Slug) *'}</strong>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <span style={{ fontSize: '12px', color: '#88978f', direction: 'ltr' }}>/proposal/</span>
-                  <input 
-                    required 
-                    value={editing.slug} 
+                  <input
+                    required
+                    value={editing.slug}
                     dir="ltr"
-                    onChange={e => setEditing({ ...editing, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })} 
-                    placeholder="client-name-project" 
+                    onChange={e => setEditing({ ...editing, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                    placeholder="client-name-project"
                   />
                 </div>
               </label>
 
               <label>
                 <strong>{ar ? 'رمز المرور / الكود الخاص *' : 'Passcode / Access Code *'}</strong>
-                <input 
-                  required 
-                  value={editing.passcode} 
+                <input
+                  required
+                  value={editing.passcode}
                   dir="ltr"
-                  onChange={e => setEditing({ ...editing, passcode: e.target.value })} 
-                  placeholder="e.g. 1234 or client-key" 
+                  onChange={e => setEditing({ ...editing, passcode: e.target.value })}
+                  placeholder="e.g. 1234 or client-key"
                 />
               </label>
 
               <label>
                 <strong>{ar ? 'بريد العميل (اختياري)' : 'Client Email (Optional)'}</strong>
-                <input 
-                  type="email" 
-                  value={editing.clientEmail || ''} 
+                <input
+                  type="email"
+                  value={editing.clientEmail || ''}
                   dir="ltr"
-                  onChange={e => setEditing({ ...editing, clientEmail: e.target.value })} 
-                  placeholder="client@domain.com" 
+                  onChange={e => setEditing({ ...editing, clientEmail: e.target.value })}
+                  placeholder="client@domain.com"
                 />
               </label>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginTop: '14px' }}>
               <label>
-                <strong>{ar ? 'إجمالي البداية (يُحسب من البنود المسعّرة)' : 'Base total (calculated from priced sections)'}</strong>
-                <input 
-                  readOnly={editing.sections.some(s=>s.startingPrice!==undefined)}
-                  value={editing.sections.some(s=>s.startingPrice!==undefined)?String(proposalTotals(editing.sections).baseFirstYear):editing.initialPrice} 
-                  onChange={e => setEditing({ ...editing, initialPrice: e.target.value })} 
-                  placeholder={ar ? 'مثال: 35,000' : 'e.g. 35,000'} 
+                <strong>{isCatalog(editing.sections)?(ar?'الإجمالي يتحدد حسب اختيار العميل':'Total depends on client selections'):(ar?'إجمالي البداية (يُحسب من البنود المسعّرة)':'Base total (calculated from priced sections)')}</strong>
+                <input
+                  readOnly={isCatalog(editing.sections)||editing.sections.some(s=>s.startingPrice!==undefined)}
+                  value={isCatalog(editing.sections)?'—':editing.sections.some(s=>s.startingPrice!==undefined)?String(proposalTotals(editing.sections).baseFirstYear):editing.initialPrice}
+                  onChange={e => setEditing({ ...editing, initialPrice: e.target.value })}
+                  placeholder={ar ? 'مثال: 35,000' : 'e.g. 35,000'}
                 />
               </label>
 
               <label>
                 <strong>{ar ? 'العملة' : 'Currency'}</strong>
-                <select 
-                  value={editing.currency} 
+                <select
+                  value={editing.currency}
                   onChange={e => setEditing({ ...editing, currency: e.target.value })}
                 >
                   <option value="SAR">SAR (ريال سعودي)</option>
@@ -363,21 +378,21 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
 
               <label>
                 <strong>{ar ? 'المدة المتوقعة للتسليم' : 'Estimated Timeline'}</strong>
-                <input 
-                  value={editing.deliveryTime || ''} 
-                  onChange={e => setEditing({ ...editing, deliveryTime: e.target.value })} 
-                  placeholder={ar ? 'مثال: 4-6 أسابيع' : 'e.g. 4-6 Weeks'} 
+                <input
+                  value={editing.deliveryTime || ''}
+                  onChange={e => setEditing({ ...editing, deliveryTime: e.target.value })}
+                  placeholder={ar ? 'مثال: 4-6 أسابيع' : 'e.g. 4-6 Weeks'}
                 />
               </label>
             </div>
 
             <label style={{ marginTop: '14px' }}>
               <strong>{ar ? 'المقدمة والملخص التنفيذي' : 'Executive Summary & Overview'}</strong>
-              <textarea 
-                rows={3} 
-                value={editing.summary} 
-                onChange={e => setEditing({ ...editing, summary: e.target.value })} 
-                placeholder={ar ? 'ملخص عام للمشروع والقيمة المضافة التي ستقدمها Redom Labs للعميل...' : 'Brief summary of the project goals and value proposition...'} 
+              <textarea
+                rows={3}
+                value={editing.summary}
+                onChange={e => setEditing({ ...editing, summary: e.target.value })}
+                placeholder={ar ? 'ملخص عام للمشروع والقيمة المضافة التي ستقدمها Redom Labs للعميل...' : 'Brief summary of the project goals and value proposition...'}
               />
             </label>
 
@@ -398,10 +413,11 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                     <span style={{ fontWeight: 'bold', fontSize: '13px', color: '#176b58' }}>
                       {ar ? `القسم #${sIdx + 1}` : `Section #${sIdx + 1}`}
                     </span>
+                    {isCatalog(editing.sections)&&<label><input type="checkbox" checked={sec.enabled!==false} onChange={e=>updateSection(sIdx,'enabled',e.target.checked)}/>{ar?'إظهار للعميل':'Show to client'}</label>}
                     {editing.sections.length > 1 && (
-                      <button 
-                        type="button" 
-                        onClick={() => removeSection(sIdx)} 
+                      <button
+                        type="button"
+                        onClick={() => removeSection(sIdx)}
                         style={{ border: 0, background: 'none', color: '#c53030', fontSize: '12px', cursor: 'pointer' }}
                       >
                         {ar ? 'حذف القسم' : 'Remove'}
@@ -412,31 +428,33 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                   <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px' }}>
                     <label>
                       <span style={{ fontSize: '12px', color: '#587164' }}>{ar ? 'عنوان القسم *' : 'Section Title *'}</span>
-                      <input 
-                        required 
-                        value={sec.title} 
-                        onChange={e => updateSection(sIdx, 'title', e.target.value)} 
-                        placeholder={ar ? 'مثال: نطاق العمل / التصميم والواجهات' : 'e.g. Scope of Work / UI Architecture'} 
+                      <input
+                        required
+                        value={sec.title}
+                        onChange={e => updateSection(sIdx, 'title', e.target.value)}
+                        placeholder={ar ? 'مثال: نطاق العمل / التصميم والواجهات' : 'e.g. Scope of Work / UI Architecture'}
                       />
                     </label>
 
                     <label>
                       <span style={{ fontSize: '12px', color: '#587164' }}>{ar ? 'رابط الصورة التوضيحية (اختياري)' : 'Image URL (Optional)'}</span>
-                      <input 
-                        value={sec.imageUrl || ''} 
+                      <input
+                        value={sec.imageUrl || ''}
                         dir="ltr"
-                        onChange={e => updateSection(sIdx, 'imageUrl', e.target.value)} 
-                        placeholder="/hero.png or https://..." 
+                        onChange={e => updateSection(sIdx, 'imageUrl', e.target.value)}
+                        placeholder="/hero.png or https://..."
                       />
                     </label>
                   </div>
 
                   <div className="proposal-admin-prices">
-                    <label>{ar?'السعر يبدأ من':'Starting price'}<input type="number" min="0" step="1" value={sec.startingPrice ?? ''} onChange={e=>updateSection(sIdx,'startingPrice',e.target.value===''?undefined:Number(e.target.value))}/></label>
+                    <label>{ar?'السعر يبدأ من':'Starting price'}<input type="number" min="0" step="1" value={sec.businessVariants?.[sec.defaultBusinessType||'restaurant']?.startingPrice ?? sec.startingPrice ?? ''} onChange={e=>updateSection(sIdx,'startingPrice',e.target.value===''?undefined:Number(e.target.value))}/></label>
                     <label>{ar?'طريقة الدفع':'Billing'}<select value={sec.billing||'once'} onChange={e=>updateSection(sIdx,'billing',e.target.value)}><option value="once">{ar?'مرة واحدة':'One-time'}</option><option value="annual">{ar?'سنوي':'Annual'}</option><option value="monthly">{ar?'شهري':'Monthly'}</option></select></label>
                     <label><input type="checkbox" checked={!!sec.optional} onChange={e=>updateSection(sIdx,'optional',e.target.checked)}/>{ar?'إضافة اختيارية خارج إجمالي البداية':'Optional, excluded from base total'}</label>
                   </div>
                   <div className="proposal-admin-prices"><label>{ar?'رابط تفاصيل الباقات':'Package details URL'}<input type="url" value={sec.detailsUrl||''} onChange={e=>updateSection(sIdx,'detailsUrl',e.target.value)}/></label><label>{ar?'رابط الباقات بالإنجليزية':'English package URL'}<input type="url" value={sec.detailsUrlEn||''} onChange={e=>updateSection(sIdx,'detailsUrlEn',e.target.value)}/></label><label>{ar?'عنوان السعر أو توضيح المجانية':'Price label / included wording'}<input value={sec.priceLabelAr||''} onChange={e=>updateSection(sIdx,'priceLabelAr',e.target.value)}/></label></div>
+                  {isCatalog(editing.sections)&&<label>{ar?'اشتراك شهري إضافي يبدأ من (اختياري)':'Additional monthly subscription from (optional)'}<input type="number" min="0" value={sec.monthlyPrice??''} onChange={e=>updateSection(sIdx,'monthlyPrice',e.target.value===''?undefined:Number(e.target.value))}/></label>}
+                  {sec.businessVariants&&<details><summary>{ar?'أسعار ومميزات حسب النشاط':'Prices and features by business'}</summary>{businessTypes.map(b=><div key={b.id}><h4>{ar?b.ar:b.en}</h4><label>{ar?'يبدأ من':'From'}<input type="number" min="0" value={sec.businessVariants?.[b.id]?.startingPrice??''} onChange={e=>updateSection(sIdx,'businessVariants',{...sec.businessVariants,[b.id]:{...sec.businessVariants?.[b.id],startingPrice:e.target.value===''?undefined:Number(e.target.value)}})}/></label><label>{ar?'المميزات بالعربية':'Arabic features'}<textarea value={(sec.businessVariants?.[b.id]?.bullets||[]).join('\n')} onChange={e=>updateSection(sIdx,'businessVariants',{...sec.businessVariants,[b.id]:{...sec.businessVariants?.[b.id],bullets:e.target.value.split('\n')}})}/></label><label>English features<textarea value={(sec.businessVariants?.[b.id]?.bulletsEn||[]).join('\n')} onChange={e=>updateSection(sIdx,'businessVariants',{...sec.businessVariants,[b.id]:{...sec.businessVariants?.[b.id],bulletsEn:e.target.value.split('\n')}})}/></label></div>)}</details>}
                   <details><summary>{ar?'النص الإنجليزي':'English copy'}</summary>
                     <label>English title<input value={sec.titleEn||''} onChange={e=>updateSection(sIdx,'titleEn',e.target.value)}/></label>
                     <label>English description<textarea value={sec.descriptionEn||''} onChange={e=>updateSection(sIdx,'descriptionEn',e.target.value)}/></label>
@@ -445,11 +463,11 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                   <AdminImagePicker ar={ar} crop value={sec.imageUrl||''} disabled={saving||imageBusy} onBusyChange={setImageBusy} onImages={urls=>updateSection(sIdx,'imageUrl',urls[0])}/>
                   <label style={{ marginTop: '10px' }}>
                     <span style={{ fontSize: '12px', color: '#587164' }}>{ar ? 'وصف القسم والتفاصيل' : 'Section Description & Scope'}</span>
-                    <textarea 
-                      rows={2} 
-                      value={sec.description} 
-                      onChange={e => updateSection(sIdx, 'description', e.target.value)} 
-                      placeholder={ar ? 'شرح تفصيلي لهذا الجزء من المشروع...' : 'Detailed explanation of this section...'} 
+                    <textarea
+                      rows={2}
+                      value={sec.description}
+                      onChange={e => updateSection(sIdx, 'description', e.target.value)}
+                      placeholder={ar ? 'شرح تفصيلي لهذا الجزء من المشروع...' : 'Detailed explanation of this section...'}
                     />
                   </label>
 
@@ -458,11 +476,11 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
                     <span style={{ fontSize: '12px', color: '#587164', display: 'block', marginBottom: '6px' }}>
                       {ar ? 'النقاط والمخرجات الرئيسية (مفصولة بأسطر):' : 'Key deliverables (one per line):'}
                     </span>
-                    <textarea 
-                      rows={2} 
-                      value={(sec.bullets || []).join('\n')} 
-                      onChange={e => updateSection(sIdx, 'bullets', e.target.value.split('\n').filter(Boolean))} 
-                      placeholder={ar ? 'نقطة ١\nنقطة ٢\nنقطة ٣' : 'Feature 1\nFeature 2\nFeature 3'} 
+                    <textarea
+                      rows={2}
+                      value={(sec.bullets || []).join('\n')}
+                      onChange={e => updateSection(sIdx, 'bullets', e.target.value.split('\n').filter(Boolean))}
+                      placeholder={ar ? 'نقطة ١\nنقطة ٢\nنقطة ٣' : 'Feature 1\nFeature 2\nFeature 3'}
                     />
                   </div>
                 </div>

@@ -250,3 +250,11 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Reduce proposal navbar logo width to 150px desktop / 120px mobile.
 
 - [x] Restore interior spacing to the proposal introduction card: 36px horizontal desktop and 20px mobile, with the summary and highlights inset consistently.
+
+## Selectable service proposals — October 13, 2026
+- [x] Added admin-created catalog proposals with passcode links, enabled sections, editable activity pricing/features and quote request inbox. Retained detailed legacy proposals.
+- [x] Rebuilt MUNAYA catalog presentation around the supplied cream/white/teal reference: activity selector, three main service cards, product/creative sections, additional services and selected-service sidebar.
+- [x] Removed the preselection headline total. Client totals start at zero and sum only selected one-time, annual and monthly charges independently; no projected first-year monthly multiplication is shown.
+- [x] Added richer bilingual service explanations and a native accessible custom-quote dialog with required phone and optional notes/name. Blank contact names use the proposal client name.
+- [x] Production build/TypeScript and browser checks passed: protected gate, 11 selectable services, activity-specific pricing/features, independent billing totals/removal, dialog, required phone/optional notes, Arabic/English and 320/390/768px layouts without horizontal overflow or page errors.
+- [x] Live request RPC exists and rejects an incorrect passcode without inserting a lead. Earlier work created MUNAYA and verified request snapshots; this revision leaves stored commercial prices unchanged.
