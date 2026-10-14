@@ -331,7 +331,8 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
               <label>
                 <strong>{ar ? 'رمز المرور / الكود الخاص *' : 'Passcode / Access Code *'}</strong>
                 <input
-                  required
+                  required={editing.slug!=='general'}
+                  disabled={editing.slug==='general'}
                   value={editing.passcode}
                   dir="ltr"
                   onChange={e => setEditing({ ...editing, passcode: e.target.value })}

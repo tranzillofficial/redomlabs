@@ -14,7 +14,7 @@ export async function saveProposalAction(proposal: Proposal) {
   const admin = await currentAdmin();
   if (!admin) return { success: false, error: 'Unauthorized' };
 
-  if (!proposal.title || !proposal.clientName || !proposal.slug || !proposal.passcode) {
+  if (!proposal.title || !proposal.clientName || !proposal.slug || (proposal.slug!=='general'&&!proposal.passcode)) {
     return { success: false, error: 'Missing required fields' };
   }
 
@@ -22,6 +22,7 @@ export async function saveProposalAction(proposal: Proposal) {
   if(proposal.sections.some(s=>s.monthlyPrice!==undefined&&(!Number.isFinite(s.monthlyPrice)||s.monthlyPrice<0)||s.businessVariants&&Object.values(s.businessVariants).some(v=>v?.startingPrice!==undefined&&(!Number.isFinite(v.startingPrice)||v.startingPrice<0))))return {success:false,error:'Invalid pricing'};
   if(proposal.sections.some(s=>s.startingPrice!==undefined&&(!Number.isFinite(s.startingPrice)||s.startingPrice<0)||s.billing&&!["once","annual","monthly"].includes(s.billing))) return {success:false,error:'Invalid pricing'};
 
+  if(proposal.slug==='general')proposal.passcode='';
   // Ensure clean slug
   proposal.slug = proposal.slug.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-');
 

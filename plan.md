@@ -258,3 +258,13 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Added richer bilingual service explanations and a native accessible custom-quote dialog with required phone and optional notes/name. Blank contact names use the proposal client name.
 - [x] Production build/TypeScript and browser checks passed: protected gate, 11 selectable services, activity-specific pricing/features, independent billing totals/removal, dialog, required phone/optional notes, Arabic/English and 320/390/768px layouts without horizontal overflow or page errors.
 - [x] Live request RPC exists and rejects an incorrect passcode without inserting a lead. Earlier work created MUNAYA and verified request snapshots; this revision leaves stored commercial prices unchanged.
+
+## Public general service proposal — October 14, 2026
+- [x] Created `/proposal/general`, opening without a password and without a client dedication.
+- [x] Public database RPC exposes only the active, unexpired `general` catalog with an explicitly blank passcode; private proposal access/RLS remains intact.
+- [x] Ordered public services by technology/development, then marketing/creative, with MenuzQR, Genaan and ElNota in the last section titled خدمات منفذة من الشركة.
+- [x] Added desktop/internal tools quoted to scope and ElNota at its verified EGP 1,000 core activation price; optional cloud pricing is described separately.
+- [x] General catalog is editable in the existing admin manager. Quote requests use current database prices and the existing request inbox/RPC.
+- [x] Production build and browser checks passed: no password/client badge, 13 choices, final product grouping, totals/scoped-pricing notice, contact dialog, Arabic/English, 320/390/768px without overflow, and private MUNAYA protection.
+- [x] Transactional anonymous-role database checks passed for public read, private-access rejection, valid request saving and invalid-section rejection; validation inserts rolled back.
+- [x] Security advisors show no finding on the added RPC; pre-existing RLS trigger execution and leaked-password Auth warnings are outside this change.
