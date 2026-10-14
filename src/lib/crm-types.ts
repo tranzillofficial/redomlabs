@@ -1,0 +1,18 @@
+export type CustomerStage = "customer" | "potential" | "follow_up";
+export type CRMCustomer = {
+  id: string;
+  name: string;
+  phone: string;
+  business_name: string;
+  service_name: string;
+  total_amount: number;
+  paid_amount: number;
+  remaining_amount: number;
+  currency: string;
+  stage: CustomerStage;
+  follow_up_date: string | null;
+  notes: string;
+  proposal_request_id: string | null;
+  created_at: string;
+  updated_at: string;
+};

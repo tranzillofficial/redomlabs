@@ -7,7 +7,7 @@ export function AdminContact({ar,settings=false}:{ar:boolean;settings?:boolean})
  const [data,setData]=useState<Awaited<ReturnType<typeof loadContactAdmin>>|null>(null),[notice,setNotice]=useState(''),[pending,setPending]=useState(false),[deleting,setDeleting]=useState<string|null>(null),[loadingMore,setLoadingMore]=useState(false),[hasMore,setHasMore]=useState(false);
  const cursor=useRef<Inquiry|null>(null);
  const text=(a:string,b:string)=>ar?a:b;
- useEffect(()=>{let active=true;loadContactAdmin().then(r=>{if(active){setData(r);setHasMore(r.inquiries.length===100);cursor.current=r.inquiries.at(-1)||null}});return ()=>{active=false}},[]);
+ useEffect(()=>{let active=true;loadContactAdmin(!!settings).then(r=>{if(active){setData(r);setHasMore(r.inquiries.length===100);cursor.current=r.inquiries.at(-1)||null}});return ()=>{active=false}},[]);
  if(!data)return <p role="status">{text('جارٍ التحميل…','Loading…')}</p>;
  const values=normalizeContact(data.settings);
  const fields=[['address_en',text('المدينة والعنوان بالإنجليزية','Location in English')],['address_ar',text('المدينة والعنوان بالعربية','Location in Arabic')],['address_details_en',text('تفاصيل العنوان بالإنجليزية (اختياري)','Address details in English (optional)')],['address_details_ar',text('تفاصيل العنوان بالعربية (اختياري)','Address details in Arabic (optional)')],['phone',text('الهاتف (اختياري)','Phone (optional)')],['email',text('البريد الإلكتروني (اختياري)','Email (optional)')]] as const;

@@ -268,3 +268,12 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Production build and browser checks passed: no password/client badge, 13 choices, final product grouping, totals/scoped-pricing notice, contact dialog, Arabic/English, 320/390/768px without overflow, and private MUNAYA protection.
 - [x] Transactional anonymous-role database checks passed for public read, private-access rejection, valid request saving and invalid-section rejection; validation inserts rolled back.
 - [x] Security advisors show no finding on the added RPC; pre-existing RLS trigger execution and leaked-password Auth warnings are outside this change.
+
+## CRM, proposal inbox and team access — October 14, 2026
+- [x] Persistent CRM customer/service records with name, phone, business, notes, agreed total, deposit/paid amount, generated remaining balance, currency and customer/potential/follow-up stages. Added follow-up dates, search/stage filtering and pagination.
+- [x] Per-user unread quote badge with 30-second/focus refresh; opening a request persists a read receipt. Added confirmed request deletion, database-attributed contact actor/time and idempotent conversion to potential CRM customer.
+- [x] Owner-managed staff creation, named accounts, section permissions and immediate disabling. Existing owners keep full access; scopes are enforced in server actions and RLS with current database permissions.
+- [x] Deployed additive schema and owner-authorized admin-team Edge Function to esastftdifqqoksylbwv. No service-role key is required in the Next.js environment or exposed to clients. No emails are sent by account creation.
+- [x] Live transactional SQL checks passed: precise balance, overpayment rejection, scoped staff access, denied self-escalation, disabled access revocation, per-user reads, contact attribution/spoof prevention, receipt deletion cascade and anonymous CRM denial; public general proposal remains available. All test mutations rolled back. Security advisors found no new issue from this work.
+- [x] Local browser contract fixtures passed CRM create/edit/reload, payment balance, follow-up, unread/contact/conversion, team creation/scopes/disable, denied tabs, deletion cancel/success, AR/EN and 320/390/768px layouts. Screenshots reviewed. Owner-only Edge handler contract tests passed, including failed-account-insert cleanup. Production build passed.
+- [ ] Verify Git publication and production deployment. Live login/account creation through an owner session is not claimed by fixture tests.

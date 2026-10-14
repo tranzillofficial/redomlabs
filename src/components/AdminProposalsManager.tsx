@@ -1,15 +1,13 @@
 'use client';
 import {createServiceCatalog,businessTypes,isCatalog,catalogTotals,type BusinessType} from '../lib/proposal-catalog';
-import type {ProposalRequest} from '../lib/proposal-request-types';
+import {AdminProposalInbox} from './AdminProposalInbox';
 import {AdminImagePicker} from './AdminImagePicker';
 import { useState, useEffect, useRef } from 'react';
 import {proposalTotals} from '../lib/proposal-pricing';
 import { Proposal, ProposalSection } from '../lib/proposal-types';
-import { getAdminProposalsAction, saveProposalAction, deleteProposalAction, getProposalRequestsAction } from '../app/(admin)/admin/[locale]/proposal-actions';
+import { getAdminProposalsAction, saveProposalAction, deleteProposalAction } from '../app/(admin)/admin/[locale]/proposal-actions';
 
-export function AdminProposalsManager({ ar }: { ar: boolean }) {
-  const [requests,setRequests]=useState<ProposalRequest[]>([]);
-  const [requestError,setRequestError]=useState(false);
+export function AdminProposalsManager({ ar, canCRM=false }: { ar: boolean;canCRM?:boolean }) {
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -22,7 +20,6 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
 
   useEffect(() => {
     loadProposals();
-    getProposalRequestsAction().then(r=>{setRequests(r.data);setRequestError(!r.success)});
   }, []);
 
   async function loadProposals() {
@@ -280,7 +277,7 @@ export function AdminProposalsManager({ ar }: { ar: boolean }) {
         </div>
       )}
 
-      <section className="admin-card" style={{marginTop:24}}><div className="card-heading"><h2>{ar?'طلبات عروض مخصصة':'Custom quote requests'}</h2><button type="button" className="admin-secondary" onClick={()=>getProposalRequestsAction().then(r=>{setRequests(r.data);setRequestError(!r.success)})}>{ar?'تحديث':'Refresh'}</button></div>{requestError&&<p role="alert">{ar?'تعذر تحميل الطلبات.':'Unable to load requests.'}</p>}{!requestError&&!requests.length&&<p>{ar?'لا توجد طلبات حتى الآن.':'No requests yet.'}</p>}{requests.map(r=><article className="contact-inquiry" key={r.id}><h3>{r.client_name} · {r.contact_name}</h3><a href={`tel:${r.phone.replace(/[^+0-9]/g,'')}`} dir="ltr">{r.phone}</a><p>{r.proposal_slug} · {businessTypes.find(b=>b.id===r.business_type)?.[ar?'ar':'en']} · {new Date(r.created_at).toLocaleString(ar?'ar-EG':'en-GB')}</p><ul>{r.sections.map(section=><li key={section.id}>{ar?section.title:section.titleEn||section.title} — {section.startingPrice??0} {r.currency} ({section.billing||'once'}){section.monthlyPrice!==undefined?` + ${section.monthlyPrice} ${r.currency} / ${ar?'شهر':'month'}`:''}</li>)}</ul><p style={{whiteSpace:'pre-wrap'}}>{r.notes}</p><small>{ar?'تقدير أول سنة':'First-year estimate'}: {catalogTotals(r.sections).firstYear.toLocaleString()} {r.currency}</small></article>)}</section>
+      <AdminProposalInbox ar={ar} canCRM={canCRM}/>
       {/* Proposal Edit / Create Modal */}
       {editing && (
         <dialog ref={proposalDialog} onCancel={e=>{e.preventDefault();if(!saving&&!imageBusy)setEditing(null)}} className="admin-dialog proposal-dialog" style={{ width: '840px', maxWidth: '95vw' }}>
