@@ -1,5 +1,6 @@
 "use server";
 import { contactAdminClient } from "../../../../lib/contact-service";
+import {currentAccess} from "../../../../lib/admin-auth";
 import type { CRMCustomer } from "../../../../lib/crm-types";
 const uuid = (v: string) =>
   typeof v === "string" &&
@@ -15,21 +16,9 @@ export async function loadCRM(page = 0, search = "", stage = "all") {
     )
       throw Error();
     const client = await contactAdminClient("crm");
-    let query = client.from("crm_customers").select("*", { count: "exact" });
-    if (stage !== "all") query = query.eq("stage", stage);
-    const term = search.replace(/[^\p{L}\p{N}\s@.+_-]/gu, "").trim();
-    if (term)
-      query = query.or(
-        ["name", "phone", "business_name", "service_name"]
-          .map((k) => `${k}.ilike.%${term}%`)
-          .join(","),
-      );
-    const { data, error, count } = await query
-      .order("created_at", { ascending: false })
-      .order("id", { ascending: false })
-      .range(page * 50, page * 50 + 49);
-    if (error) throw error;
-    return { data: data as CRMCustomer[], count: count || 0, error: false };
+    const {data,error}=await client.rpc('crm_safe_list',{page_number:page,search_term:search,stage_filter:stage});
+    if(error)throw error;
+    return {data:data.data as CRMCustomer[],count:data.count as number,error:false};
   } catch {
     return { data: [] as CRMCustomer[], count: 0, error: true };
   }
@@ -77,6 +66,10 @@ export async function saveCRM(row: CRMCustomer) {
       return false;
     if (row.proposal_request_id && !uuid(row.proposal_request_id)) return false;
     const client = await contactAdminClient("crm");
+    const access=await currentAccess();
+    if(!access?.owner&&!access?.permissions.includes('finance')){
+      const {error}=await client.rpc('crm_safe_save',{payload:row});return !error;
+    }
     const { error } = await client
       .from("crm_customers")
       .upsert({
@@ -124,26 +117,7 @@ export async function proposalToCRM(id: string) {
       .eq("id", id)
       .single();
     if (error || !r) return false;
-    const { data: existing } = await client
-      .from("crm_customers")
-      .select("id")
-      .eq("proposal_request_id", id)
-      .maybeSingle();
-    if (existing) return true;
-    const { error: insert } = await client.from("crm_customers").insert({
-      name: r.contact_name,
-      phone: r.phone,
-      business_name: r.proposal_slug === "general" ? "" : r.client_name,
-      service_name: r.sections
-        .map((s: { title: string }) => s.title)
-        .join("، ")
-        .slice(0, 300),
-      currency: r.currency,
-      notes: r.notes,
-      proposal_request_id: id,
-      stage: "potential",
-    });
-    return !insert;
+    const {error:insert}=await client.rpc('crm_convert_request',{request_id:id});return !insert;
   } catch {
     return false;
   }

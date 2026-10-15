@@ -5,8 +5,9 @@ import {
   saveCRM,
   deleteCRM,
 } from "../app/(admin)/admin/[locale]/crm-actions";
+import {customerTotals} from "../app/(admin)/admin/[locale]/expense-actions";
 import type { CRMCustomer, CustomerStage } from "../lib/crm-types";
-export function AdminCRM({ ar }: { ar: boolean }) {
+export function AdminCRM({ ar, financial=false }: { ar: boolean; financial?: boolean }) {
   const t = (a: string, b: string) => (ar ? a : b);
   const [rows, setRows] = useState<CRMCustomer[]>([]),
     [page, setPage] = useState(0),
@@ -18,6 +19,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
     [debounced, setDebounced] = useState(""),
     [editing, setEditing] = useState<CRMCustomer | null>(null),
     [busy, setBusy] = useState(false);
+  const [totals,setTotals]=useState<{currency:string;total:number;paid:number;remaining:number}[]>([]);
   const dialog = useRef<HTMLDialogElement>(null);
   const stages: Record<CustomerStage, string> = {
     customer: t("عملاء حاليون", "Customers"),
@@ -28,6 +30,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
     setLoading(true);
     const r = await loadCRM(page, debounced, filter);
     setRows(r.data);
+    if(financial)setTotals(await customerTotals());
     setCount(r.count);
     setError(
       r.error ? t("تعذر تحميل العملاء.", "Unable to load customers.") : "",
@@ -94,6 +97,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
             {t("إضافة عميل", "Add customer")}
           </button>
         </div>
+        {financial&&<div className="crm-grid">{totals.map(r=><article className="crm-customer" key={r.currency}><h3>{r.currency}</h3><dl className="crm-amounts">{[[t('إجمالي المستحق','Total due'),r.total],[t('إجمالي الداخل / المدفوع','Total received / paid'),r.paid],[t('المتبقي','Remaining'),r.remaining]].map(([label,value])=><div key={label}><dt>{label}</dt><dd>{Number(value).toLocaleString(ar?'ar-EG':'en-GB',{minimumFractionDigits:2})}</dd></div>)}</dl></article>)}</div>}
         <div className="crm-toolbar">
           <input
             aria-label={t("البحث عن عميل", "Search customers")}
@@ -123,12 +127,12 @@ export function AdminCRM({ ar }: { ar: boolean }) {
             {t("تحديث", "Refresh")}
           </button>
         </div>
-        <p className="admin-description">
+        {financial&&<p className="admin-description">
           {t(
             "المدفوع يشمل المقدم وأي دفعات لاحقة. المتبقي يُحسب تلقائيًا.",
             "Paid includes the deposit and subsequent payments. Remaining is calculated automatically.",
           )}
-        </p>
+        </p>}
         {error && (
           <p role="alert" className="admin-status">
             {error}
@@ -151,7 +155,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                 </a>
                 <p>{r.business_name || "—"}</p>
                 <strong>{r.service_name}</strong>
-                <dl className="crm-amounts">
+                {financial&&<dl className="crm-amounts">
                   {[
                     [t("الإجمالي", "Total"), r.total_amount],
                     [t("المدفوع / المقدم", "Paid / deposit"), r.paid_amount],
@@ -165,7 +169,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                       </dd>
                     </div>
                   ))}
-                </dl>
+                </dl>}
                 {r.follow_up_date && (
                   <p className="crm-follow-up">
                     {t("موعد المتابعة: ", "Follow-up: ")}
@@ -187,9 +191,9 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                       });
                     }}
                   >
-                    {t("تعديل / تسجيل دفعة", "Edit / record payment")}
+                    {financial?t("تعديل / تسجيل دفعة", "Edit / record payment"):t("تعديل", "Edit")}
                   </button>
-                  <button
+                  {financial&&<button
                     className="admin-danger"
                     disabled={busy}
                     onClick={async () => {
@@ -210,7 +214,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                     }}
                   >
                     {t("حذف", "Delete")}
-                  </button>
+                  </button>}
                 </div>
               </article>
             ))}
@@ -296,7 +300,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                   />
                 </label>
               ))}
-              <label>
+              {financial&&<> <label>
                 {t("إجمالي المبلغ المستحق", "Total due")}
                 <input
                   type="number"
@@ -343,7 +347,7 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                   ))}
                 </select>
               </label>
-              <label>
+              </>}<label>
                 {t("حالة العميل", "Customer stage")}
                 <select
                   aria-label={t("حالة العميل", "Customer stage")}
@@ -387,13 +391,13 @@ export function AdminCRM({ ar }: { ar: boolean }) {
                 }
               />
             </label>
-            <p className="crm-balance">
+            {financial&&<p className="crm-balance">
               {t("المتبقي: ", "Remaining: ")}
               {(editing.total_amount - editing.paid_amount).toLocaleString(
                 ar ? "ar-EG" : "en-GB",
               )}{" "}
               {editing.currency}
-            </p>
+            </p>}
             {error && <p role="alert">{error}</p>}
             <button className="button" disabled={busy}>
               {busy

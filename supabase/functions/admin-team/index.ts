@@ -4,6 +4,8 @@ const sections = [
   "products",
   "work",
   "crm",
+  "expenses",
+  "finance",
   "proposals",
   "inquiries",
   "forms",
@@ -39,6 +41,7 @@ Deno.serve(async (req) => {
       input.name.length > 100 ||
       !Array.isArray(input.permissions) ||
       input.permissions.length > sections.length ||
+      !input.permissions.some((p:unknown) => typeof p==="string"&&p!=="finance") ||
       input.permissions.some(
         (p: unknown) => typeof p !== "string" || !sections.includes(p),
       ) ||

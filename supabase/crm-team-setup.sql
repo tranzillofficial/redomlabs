@@ -4,7 +4,7 @@ create table if not exists public.admin_staff (
  user_id uuid primary key references auth.users(id) on delete cascade,
  name text not null check(length(trim(name)) between 1 and 100),
  email text not null check(length(email) between 3 and 254),
- permissions text[] not null default '{}' check(permissions <@ array['overview','products','work','crm','proposals','inquiries','forms','settings']::text[]),
+ permissions text[] not null default '{}' check(permissions <@ array['overview','products','work','crm','proposals','inquiries','forms','settings','expenses','finance']::text[]),
  active boolean not null default true,
  created_at timestamptz not null default now()
 );
@@ -46,7 +46,7 @@ alter table public.crm_customers enable row level security;
 revoke all on public.crm_customers from anon,authenticated;
 grant select,insert,update,delete on public.crm_customers to authenticated;
 drop policy if exists "CRM access" on public.crm_customers;
-create policy "CRM access" on public.crm_customers for all to authenticated using((select redom_private.has_access('crm'))) with check((select redom_private.has_access('crm')));
+create policy "CRM access" on public.crm_customers for all to authenticated using((select redom_private.has_access('crm') and redom_private.has_access('finance'))) with check((select redom_private.has_access('crm') and redom_private.has_access('finance')));
 create index if not exists crm_customers_follow_up on public.crm_customers(stage,follow_up_date);
 create index if not exists crm_customers_created on public.crm_customers(created_at desc,id desc);
 create table if not exists public.proposal_request_reads (

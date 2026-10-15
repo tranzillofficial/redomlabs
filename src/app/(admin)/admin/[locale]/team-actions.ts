@@ -48,6 +48,7 @@ export async function saveStaff(input: {
       input.name.length > 100 ||
       !Array.isArray(input.permissions) ||
       input.permissions.some((p) => !adminSections.includes(p)) ||
+      !input.permissions.some((p) => p!=="finance") ||
       typeof input.active !== "boolean"
     )
       return false;

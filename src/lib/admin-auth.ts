@@ -58,7 +58,7 @@ export async function accessForUser(
     error ||
     !data?.active ||
     !Array.isArray(data.permissions) ||
-    !adminSections.some((p) => data.permissions.includes(p))
+    !adminSections.some((p) => p!=="finance"&&data.permissions.includes(p))
   )
     return null;
   return {

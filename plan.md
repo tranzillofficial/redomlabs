@@ -277,3 +277,17 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] Live transactional SQL checks passed: precise balance, overpayment rejection, scoped staff access, denied self-escalation, disabled access revocation, per-user reads, contact attribution/spoof prevention, receipt deletion cascade and anonymous CRM denial; public general proposal remains available. All test mutations rolled back. Security advisors found no new issue from this work.
 - [x] Local browser contract fixtures passed CRM create/edit/reload, payment balance, follow-up, unread/contact/conversion, team creation/scopes/disable, denied tabs, deletion cancel/success, AR/EN and 320/390/768px layouts. Screenshots reviewed. Owner-only Edge handler contract tests passed, including failed-account-insert cleanup. Production build passed.
 - [x] Published commit 0004b95 to main; production deployment dpl_26PFDY23PmYhaXJV7AGB8fAtgzd3 is READY on redomlabs.com. Deployed admin-team endpoint rejects anonymous calls with HTTP 403. Live login/account creation through an owner session is not claimed by fixture tests.
+
+## Footer social links — October 14, 2026
+- Replaced social text buttons with accessible SVG platform icons, 44px targets and keyboard focus states.
+- Footer omits telephone when a valid WhatsApp link is configured; contact settings remain editable.
+- Repaired missing production contact detail/social columns and verified authenticated upsert and public links.
+- Production build and AR/EN static icon/accessibility checks passed. Local browser visual check unavailable: Chromium download returned an invalid archive.
+
+## Expenses and financial privacy — October 15, 2026
+- [x] Added bilingual Expenses with amount, purpose, category, date, account attribution, paginated history and per-currency spending totals.
+- [x] Added separate owner-assigned financial permission, customer total/paid/remaining summaries, masked nonfinancial customer editing, RLS and safe RPC helpers. Existing staff remain denied financial access by default.
+- [x] Added colored platform SVG icons across shared contact/footer social links; removed redundant footer phone when WhatsApp exists.
+- [x] PostgreSQL isolation tests passed: hidden amounts, preserved balances on malicious writes, expense entry without read access, attribution spoof prevention, granted financial access, disabled account denial. All local test state is rolled back.
+- [x] Browser fixtures passed AR/EN, mobile expense entry/history/attribution, customer financial restrictions, social icons/no footer telephone and no horizontal overflow. Screenshots reviewed. Team endpoint tests and TypeScript/build passed.
+- [ ] Publish to tranzillofficial/redomlabs main and apply coordinated Supabase/Edge release after explicit production approval. Prior push was rejected by automatic approval review; no retry or indirect publishing attempted.

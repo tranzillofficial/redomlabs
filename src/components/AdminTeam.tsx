@@ -194,7 +194,7 @@ export function AdminTeam({ ar }: { ar: boolean }) {
               )}
             </div>
             <fieldset className="team-fieldset">
-              <legend>{t("الأقسام المسموح بها", "Allowed sections")}</legend>
+              <legend>{t("الأقسام والصلاحيات المسموح بها", "Allowed sections & permissions")}</legend>
               {adminSections.map((p) => (
                 <label className="team-check" key={p}>
                   <input
@@ -229,7 +229,7 @@ export function AdminTeam({ ar }: { ar: boolean }) {
             <button
               className="button"
               disabled={
-                busy || (!editing.user_id && !editing.permissions.length)
+                busy || !editing.permissions.some(p=>p!=="finance")
               }
             >
               {busy
