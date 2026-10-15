@@ -291,3 +291,13 @@ Publishing blocked: automatic approval review rejected the direct push to main b
 - [x] PostgreSQL isolation tests passed: hidden amounts, preserved balances on malicious writes, expense entry without read access, attribution spoof prevention, granted financial access, disabled account denial. All local test state is rolled back.
 - [x] Browser fixtures passed AR/EN, mobile expense entry/history/attribution, customer financial restrictions, social icons/no footer telephone and no horizontal overflow. Screenshots reviewed. Team endpoint tests and TypeScript/build passed.
 - [ ] Publish to tranzillofficial/redomlabs main and apply coordinated Supabase/Edge release after explicit production approval. Prior push was rejected by automatic approval review; no retry or indirect publishing attempted.
+
+## Production release verified — October 15, 2026
+User explicitly approved publication. Supabase migration company_expenses_financial_privacy applied successfully; admin-team v2 is ACTIVE with JWT verification. Live transactional financial-access SQL tests passed and rolled back. Published application source via GitHub connector as f072ca8e01d37fc2d98bbf24263522c065c3eb5b (tree exactly matches tested local source). Vercel deployment dpl_9aimg6tAkYcZVW8Ee3YxwNdU9gYa is READY and assigned to redomlabs.com/www.redomlabs.com. Public contact HTML exposes colored platform SVG classes. No new advisor warnings from this release; existing rls_auto_enable and leaked-password settings were not changed.
+
+## Customer directory / Sales split — October 15, 2026
+- [x] Renamed CRM navigation to Customers / العملاء; rebuilt responsive directory rows, toolbar, statuses, spacing and profile editor.
+- [x] Moved all balance summaries, paid/remaining values and account editing into Sales / المبيعات, preserving current data.
+- [x] Customer edits always preserve balances; separate sales + finance access enforced in actions/RLS/RPCs and team permission editor.
+- [x] PostgreSQL isolation tests passed for customer masking, scope isolation, balance preservation and payment updates. AR/EN desktop/mobile browser tests passed profile editing, financial field separation and restricted sales denial. Production build passed before final spacing refinement.
+- [ ] Apply coordinated schema/Edge update, publish and verify production.

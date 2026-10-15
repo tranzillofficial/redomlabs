@@ -1,6 +1,6 @@
 "use server";
 import { contactAdminClient } from "../../../../lib/contact-service";
-import {currentAccess} from "../../../../lib/admin-auth";
+import {requireSection} from "../../../../lib/admin-auth";
 import type { CRMCustomer } from "../../../../lib/crm-types";
 const uuid = (v: string) =>
   typeof v === "string" &&
@@ -66,27 +66,7 @@ export async function saveCRM(row: CRMCustomer) {
       return false;
     if (row.proposal_request_id && !uuid(row.proposal_request_id)) return false;
     const client = await contactAdminClient("crm");
-    const access=await currentAccess();
-    if(!access?.owner&&!access?.permissions.includes('finance')){
-      const {error}=await client.rpc('crm_safe_save',{payload:row});return !error;
-    }
-    const { error } = await client
-      .from("crm_customers")
-      .upsert({
-        id: row.id,
-        name: row.name.trim(),
-        phone: row.phone.trim(),
-        business_name: row.business_name.trim(),
-        service_name: row.service_name.trim(),
-        notes: row.notes.trim(),
-        total_amount: row.total_amount,
-        paid_amount: row.paid_amount,
-        currency: row.currency,
-        stage: row.stage,
-        follow_up_date: row.follow_up_date || null,
-        proposal_request_id: row.proposal_request_id || null,
-        updated_at: new Date().toISOString(),
-      });
+    const {error}=await client.rpc('crm_safe_save',{payload:row});
     return !error;
   } catch {
     return false;
@@ -121,4 +101,11 @@ export async function proposalToCRM(id: string) {
   } catch {
     return false;
   }
+}
+
+export async function loadSales(page=0,search="") {
+ try {await requireSection('finance');const client=await contactAdminClient('sales');if(!Number.isInteger(page)||page<0||typeof search!=="string"||search.length>200)throw Error();const {data,error}=await client.rpc('sales_list',{page_number:page,search_term:search,stage_filter:'all'});if(error)throw error;return {data:data.data as CRMCustomer[],count:data.count as number,error:false}}catch{return {data:[] as CRMCustomer[],count:0,error:true}}
+}
+export async function saveSale(row:{id:string;total_amount:number;paid_amount:number;currency:string;service_name:string}){
+ try{await requireSection('finance');const c=await contactAdminClient('sales');const valid=(n:number)=>Number.isFinite(n)&&n>=0&&n<=999999999999.99&&Math.abs(n*100-Math.round(n*100))<.001;if(!uuid(row.id)||!valid(row.total_amount)||!valid(row.paid_amount)||row.paid_amount>row.total_amount||!['EGP','USD','SAR','AED','GBP','EUR'].includes(row.currency)||typeof row.service_name!=='string'||!row.service_name.trim()||row.service_name.length>300)return false;const {data,error}=await c.from('crm_customers').update({total_amount:row.total_amount,paid_amount:row.paid_amount,currency:row.currency,service_name:row.service_name.trim(),updated_at:new Date().toISOString()}).eq('id',row.id).select('id');return !error&&data?.length===1}catch{return false}
 }

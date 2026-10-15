@@ -4,6 +4,7 @@ const sections = [
   "products",
   "work",
   "crm",
+  "sales",
   "expenses",
   "finance",
   "proposals",
