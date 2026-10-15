@@ -330,3 +330,10 @@ Sales UI production verified: GitHub 039fc079923437c0c5cba99d9e2c831e924b3240 ma
 - [x] Applied additive invoice schema/RPC migrations; live SQL rollback tests passed legacy balance preservation, duplicate retry, amount validation, currency protection, actor attribution, scope changes and denied writes. Security advisor reports no new invoice findings (existing auto-enable trigger function grants and password protection warnings remain).
 - [x] AR/EN 320/390/768/1440 browser checks passed new invoice, customer chooser, context action, history persistence, lost-confirmation retry without duplication and protected UI. Desktop/mobile screenshots reviewed; production build passed.
 - [ ] Production publication.
+
+Invoice release verified: applied sales_invoice_records and atomic_invoice_creation to esastftdifqqoksylbwv; live SQL tests rolled back all fixtures. Source 638d00c65b866ccf9ff51b9beca940644339b8a3 matches tested local tree 831edef189379fc4ac8f9200d548e7761a3c770a. Vercel dpl_FqQZrYAo5aTsd2W7VcZCxkRgFL8T READY on redomlabs.com/www. Existing balances were not migrated or reset.
+
+## Compact sales heading — October 16, 2026
+- [x] Removed the duplicate Sales overview title/subtitle and tightened page heading margins, typography and top padding. Currency selection remains available when multiple currencies exist.
+- [x] Production build and AR/EN responsive browser checks passed at 320/390/768/1440. Desktop/mobile screenshots reviewed.
+- [ ] Publish spacing refinement.
