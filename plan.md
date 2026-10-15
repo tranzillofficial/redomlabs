@@ -321,3 +321,12 @@ Reference UI production release verified: source 9b9f4c23f4484d867d2f212e9c106a9
 - [x] AR/EN browser fixture passed 320/390/768/1440 widths, expansion, menu, payment persistence and denied staff access. Screenshots reviewed; refined typography/spacing afterward.
 - [x] Final production build and refined AR/EN visual/interaction checks passed.
 - [ ] Production publication.
+
+Sales UI production verified: GitHub 039fc079923437c0c5cba99d9e2c831e924b3240 matches tested local tree ff43b88c720a6ebae977a53468ef1cb3bfef0681. Vercel dpl_Ds2vAKbCsbeiA7jdcfvdJFitcjcg is READY on redomlabs.com and www.redomlabs.com. No schema or account balance changes during release.
+
+## New Invoice — October 16, 2026
+- [x] Added New / جديد and New Invoice / فاتورة جديدة with customer search/pagination, description, amount, initial paid, currency and date.
+- [x] Persistent numbered invoice history, authenticated actor, atomic balance increments, retry idempotency, currency lock and financial scope enforcement.
+- [x] Applied additive invoice schema/RPC migrations; live SQL rollback tests passed legacy balance preservation, duplicate retry, amount validation, currency protection, actor attribution, scope changes and denied writes. Security advisor reports no new invoice findings (existing auto-enable trigger function grants and password protection warnings remain).
+- [x] AR/EN 320/390/768/1440 browser checks passed new invoice, customer chooser, context action, history persistence, lost-confirmation retry without duplication and protected UI. Desktop/mobile screenshots reviewed; production build passed.
+- [ ] Production publication.
