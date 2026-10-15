@@ -301,3 +301,14 @@ User explicitly approved publication. Supabase migration company_expenses_financ
 - [x] Customer edits always preserve balances; separate sales + finance access enforced in actions/RLS/RPCs and team permission editor.
 - [x] PostgreSQL isolation tests passed for customer masking, scope isolation, balance preservation and payment updates. AR/EN desktop/mobile browser tests passed profile editing, financial field separation and restricted sales denial. Production build passed before final spacing refinement.
 - [ ] Apply coordinated schema/Edge update, publish and verify production.
+
+Customer/Sales production release: schema changes applied in sales_staff_scope, sales_scoped_list, sales_row_access and customer_directory_mask_balances; admin-team v3 ACTIVE. Live transactional access tests passed and rolled back. GitHub source 6d2f290cd4fb9a068358ece964c7024613463492 matches tested local tree 8c37315746e8705cfeca793ed626d87e69f8b697. Explicit Git-source production deployment dpl_FAUnbF1g3N1jbFKZZLte4ktacgEc is READY with redomlabs.com/www aliases. No staff was automatically granted sales access.
+
+## Reference customer UI — October 16, 2026
+- [x] Inspected supplied desktop/mobile references; created compact desktop directory and expandable mobile cards preserving cream/green style.
+- [x] Selection checkboxes render only after Select; individual selection, indeterminate select-all and select all on the current page are supported. Selection resets on page/search/status changes.
+- [x] One keyboard-accessible contextual menu per customer contains all actions; expanded details have no duplicate edit/follow-up/note buttons. Menus close on outside click/Escape and flip within available viewport space.
+- [x] Real search-scoped stage counts; information/follow-up/notes tabs show current saved data; sales links remain permission gated. Existing customer balances stay separate.
+- [x] Browser fixtures passed selection/all, menu uniqueness, profile/notes persistence, tab/expand behavior, protected actions, keyboard focus, AR/EN and 320/390/768/1440 widths. Screenshots reviewed; refined compact mobile tabs and tablet breakpoint afterward.
+- [x] Final production build and focused visual recheck passed.
+- [ ] Verify production publication.
