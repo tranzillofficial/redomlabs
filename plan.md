@@ -312,3 +312,12 @@ Customer/Sales production release: schema changes applied in sales_staff_scope, 
 - [x] Browser fixtures passed selection/all, menu uniqueness, profile/notes persistence, tab/expand behavior, protected actions, keyboard focus, AR/EN and 320/390/768/1440 widths. Screenshots reviewed; refined compact mobile tabs and tablet breakpoint afterward.
 - [x] Final production build and focused visual recheck passed.
 - [ ] Verify production publication.
+
+Reference UI production release verified: source 9b9f4c23f4484d867d2f212e9c106a90efb61590 matches tested tree 3df7f57ac50f0e266b271bfeb62195e23209311f. Vercel deployment dpl_7S9qrZqvXcSYLbKEWKV1k2WtNiqt is READY. Production admin route returns HTTP 200 and the new directory/menu stylesheet. No schema, grants or customer data changes.
+
+## Reference sales UI — October 16, 2026
+- [x] Reviewed supplied desktop/mobile references and implemented responsive financial cards, currency-specific totals/donut, expandable account rows/cards and a single actions menu.
+- [x] Preserved cumulative account editing and sales+finance permissions. Current data has no transaction ledger: no invented invoices, dates, monthly changes or time-series graph.
+- [x] AR/EN browser fixture passed 320/390/768/1440 widths, expansion, menu, payment persistence and denied staff access. Screenshots reviewed; refined typography/spacing afterward.
+- [x] Final production build and refined AR/EN visual/interaction checks passed.
+- [ ] Production publication.
