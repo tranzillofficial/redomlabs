@@ -3,6 +3,8 @@ export type CRMCustomer = {
   id: string;
   name: string;
   phone: string;
+  phone_secondary?: string;
+  phone_secondary_name?: string;
   business_name: string;
   service_name: string;
   total_amount: number;

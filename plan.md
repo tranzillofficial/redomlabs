@@ -393,4 +393,13 @@ Invoice register polish published: 32dc4e5194b6d883e84f56a7bf4ea27a2ee997a8 matc
 - [x] Created, validated, committed and successfully pushed compact-ui-ux to the persistent Skills workspace (16f379b). Added project design defaults to AGENTS.md.
 - [x] Replaced oversized invoice type cards with ordinary compact choices and an icon close control; tightened invoice form/dialog spacing and secondary controls while keeping mobile touch targets.
 - [x] AR/EN 320/390/768/1440 measured dialog/control sizes and screenshots passed, together with creation, retry, history and permission regressions. Production build passed.
-- [ ] Publish compact invoice dialog.
+- [x] Publish compact invoice dialog.
+
+Compact invoice dialog published: source 6bb0c5158d5e4fc7e3f47a8f8a366f95f0180b02 matches tested tree 4fe39662ce73e0222bc5ebb52accf20ec41dfd08. Git deployment dpl_5WdxtdVeX3xeQ6gtwWN1WBh4QDwB READY with www/redomlabs.com aliases. Skill compact-ui-ux persisted via Skills repository push 16f379b. Git-triggered deployments are working again: inspect the webhook deployment before requesting an explicit fallback to avoid duplicate builds.
+
+## Named secondary customer contact — October 16, 2026
+- [x] Added optional second phone and contact name to customer profiles and atomic invoice/new-customer creation. Secondary names display only in expanded details; primary customer identity stays unchanged.
+- [x] Applied additive customer_optional_secondary_contact migration; existing records default blank, old payloads preserve existing contact, and both directories can search the second number.
+- [x] Live SQL rollback tests passed profile/invoice saves, retry safety, invalid-phone rejection, clearing, masked finance, legacy payloads and unchanged main name/balances. Security advisor reports no new findings.
+- [x] AR/EN 320/390/768/1440 edit/reload/details/identity checks, invalid-phone handling, invoice-new-customer contact save and remove/reset flows passed. Desktop/mobile screenshots reviewed; production build passed.
+- [ ] Publish named secondary contact.

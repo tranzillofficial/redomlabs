@@ -47,6 +47,8 @@ export async function saveCRM(row: CRMCustomer) {
       row.phone.replace(/\D/g, "").length < 7
     )
       return false;
+    if(row.phone_secondary!==undefined&&(typeof row.phone_secondary!=='string'||(row.phone_secondary.trim()!==''&&(!/^[+0-9 ()-]{7,40}$/.test(row.phone_secondary.trim())||row.phone_secondary.replace(/\D/g,'').length<7))))return false;
+    if(row.phone_secondary_name!==undefined&&(typeof row.phone_secondary_name!=='string'||row.phone_secondary_name.trim().length>100||(!row.phone_secondary?.trim()&&row.phone_secondary_name.trim()!=='')))return false;
     const cents = (v: number) =>
       Number.isFinite(v) &&
       v >= 0 &&

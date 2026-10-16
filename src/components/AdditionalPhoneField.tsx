@@ -1,0 +1,8 @@
+'use client';
+import {useEffect,useRef,useState} from 'react';
+export function AdditionalPhoneField({ar,value,name,onChange,onNameChange}:{ar:boolean;value:string;name:string;onNameChange:(value:string)=>void;onChange:(value:string)=>void}){
+ const [open,setOpen]=useState(!!value),[focus,setFocus]=useState(false);const input=useRef<HTMLInputElement>(null),toggle=useRef<HTMLButtonElement>(null);
+ useEffect(()=>{if(open&&focus){input.current?.focus();setFocus(false)}},[open,focus]);
+ if(!open)return <div className="additional-phone-field"><button ref={toggle} type="button" className="additional-phone-add" onClick={()=>{setOpen(true);setFocus(true)}}><span aria-hidden="true">+</span>{ar?'إضافة رقم هاتف آخر':'Add another phone'}</button></div>;
+ return <div className="additional-phone-field"><label>{ar?'رقم هاتف إضافي (اختياري)':'Additional phone (optional)'}<span className="additional-phone-control"><input ref={input} aria-label={ar?'رقم هاتف إضافي (اختياري)':'Additional phone (optional)'} type="tel" dir="ltr" autoComplete="tel" minLength={7} maxLength={40} value={value} onChange={e=>onChange(e.target.value)} placeholder="+20…"/><button type="button" className="additional-phone-remove" aria-label={ar?'إزالة رقم الهاتف الإضافي':'Remove additional phone'} title={ar?'إزالة':'Remove'} onClick={()=>{onChange('');onNameChange('');setOpen(false);requestAnimationFrame(()=>toggle.current?.focus())}}>×</button></span></label><label>{ar?'اسم صاحب الرقم (اختياري)':'Contact name (optional)'}<input type="text" dir="auto" maxLength={100} value={name} onChange={e=>onNameChange(e.target.value)} placeholder={ar?'مثال: مسؤول الحساب':'e.g. Account contact'}/></label></div>
+}
