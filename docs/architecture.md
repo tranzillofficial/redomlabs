@@ -91,3 +91,5 @@ Sales now has New / جديد opening New Invoice / فاتورة جديدة. Sear
 Sales header spacing is scoped to the sales workspace. One page title/description leads directly into the financial cards; the redundant overview heading is removed. The optional currency selector remains above the cards on both mobile and desktop. No data/permission changes.
 
 Sales account controls now group the title/count in one heading and keep New opposite it. Desktop search has a bounded width; card padding and pagination/control heights are compact. These changes are scoped to Sales and do not affect invoice dialogs, customer records, server actions or permission checks.
+
+Dashboard frame uses the shared Brand SVG (unchanged logo geometry) rather than a text wordmark. Navigation is wider with larger, higher-contrast labels/icons and a scrollable flexible body. The decorative dashboard footer is removed and bottom content padding reduced. Mobile drawer remains bounded to the viewport. No data, permissions or public-site footer changes.

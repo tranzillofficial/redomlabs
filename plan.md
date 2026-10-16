@@ -344,3 +344,10 @@ Compact sales header published: 01b4649174321264a07610ff068e4142a963ef76, tested
 - [x] Combined account heading and result count, removed redundant helper copy/count row, reduced card padding and control heights, bounded desktop search width, and compacted pagination. Kept mobile controls comfortable and RTL/EN copy.
 - [x] Build passed; AR/EN browser checks passed at 320/390/768/1440 and desktop/mobile screenshots reviewed.
 - [ ] Publish compact controls.
+
+Compact controls release verified: source 439e4215201f0baa816bfd3cebfeab4dcde3bfd9, tested tree 3e308c026ffec1c1d9b0393aa19e4b37b81904de, production dpl_b1zd9C5VKXDVMgaUqS6fcWNsfp29 READY on redomlabs.com/www. No data or database changes.
+
+## Dashboard frame cleanup — October 16, 2026
+- [x] Removed decorative bottom footer and reduced bottom page padding. Sidebar uses the canonical Brand SVG, wider layout, clearer larger navigation text/icons and improved scroll space.
+- [x] Production build passed; bilingual 320/390/768/1440 browser checks passed, original SVG/footer removal and mobile drawer/Escape verified. Desktop/mobile screenshots reviewed.
+- [ ] Publish dashboard frame cleanup.
