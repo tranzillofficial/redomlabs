@@ -337,3 +337,10 @@ Invoice release verified: applied sales_invoice_records and atomic_invoice_creat
 - [x] Removed the duplicate Sales overview title/subtitle and tightened page heading margins, typography and top padding. Currency selection remains available when multiple currencies exist.
 - [x] Production build and AR/EN responsive browser checks passed at 320/390/768/1440. Desktop/mobile screenshots reviewed.
 - [ ] Publish spacing refinement.
+
+Compact sales header published: 01b4649174321264a07610ff068e4142a963ef76, tested tree 7b6471c1040b553d73ca5869da8a68b5adcc15a4, deployment dpl_8W19JAT6D4SHbTomr5BWuMGb6uSH READY with www/redomlabs.com aliases.
+
+## Compact sales controls — October 16, 2026
+- [x] Combined account heading and result count, removed redundant helper copy/count row, reduced card padding and control heights, bounded desktop search width, and compacted pagination. Kept mobile controls comfortable and RTL/EN copy.
+- [x] Build passed; AR/EN browser checks passed at 320/390/768/1440 and desktop/mobile screenshots reviewed.
+- [ ] Publish compact controls.
