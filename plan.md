@@ -402,4 +402,12 @@ Compact invoice dialog published: source 6bb0c5158d5e4fc7e3f47a8f8a366f95f0180b0
 - [x] Applied additive customer_optional_secondary_contact migration; existing records default blank, old payloads preserve existing contact, and both directories can search the second number.
 - [x] Live SQL rollback tests passed profile/invoice saves, retry safety, invalid-phone rejection, clearing, masked finance, legacy payloads and unchanged main name/balances. Security advisor reports no new findings.
 - [x] AR/EN 320/390/768/1440 edit/reload/details/identity checks, invalid-phone handling, invoice-new-customer contact save and remove/reset flows passed. Desktop/mobile screenshots reviewed; production build passed.
-- [ ] Publish named secondary contact.
+- [x] Publish named secondary contact.
+
+Named secondary contact release verified: source 28cb0d815bef72a01b228cedd8a8c4c844f88068 matches tested tree eba187affa42343fcdca9c130eb86849c298686d. Production dpl_6DmEiovgs9fbjmYJrq3C47tNXKGW READY with www/redomlabs.com aliases. Additive customer_optional_secondary_contact migration applied; live SQL fixtures rolled back.
+
+## Requested invoice/account cleanup — October 16, 2026
+- [x] Saved private database snapshots before changes. Direct hard-delete requests failed with expired connector requestState; used reversible archival instead.
+- [x] Archived only the supplied image-subscription invoice. Concurrently entered invoices triggered the original guard and were preserved. Retained invoices were renumbered from 1,2 onward, identity generation restored and next number verified.
+- [x] Preserved the protected customer's original balance; cleared other legacy balances while retaining amounts from the newly entered invoices. Customer profiles/contact details remain intact.
+- [x] Authenticated owner-session rollback query verified eight visible invoices numbered 1–8 and zero archived rows visible. Next sequence value is 9. No frontend release required.
