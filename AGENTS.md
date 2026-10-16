@@ -3,6 +3,7 @@ Read plan.md and docs/architecture.md before edits. Update plan.md after each co
 All user-facing content must have Arabic and English versions. Arabic pages use lang=ar and dir=rtl. Keep language switching on the same page.
 Never show individual projects or product images on the home page. Show own products under /[locale]/products and client work under /[locale]/work. Never fabricate portfolio entries.
 Preserve the reference logo geometry. REDOM uses independently animatable SVG letter groups; the R mark omits the traditional left vertical stem. Motion must respect prefers-reduced-motion.
+Apply the compact-ui-ux skill for UI work when available. Keep controls and dialogs compact, preserve the established style, avoid duplicated headings/actions and empty space, and prioritize clear flows, readable content, keyboard access and usable touch targets. Simple choices use normal buttons rather than large cards.
 Never fabricate company credentials or contact information. Never commit secrets. Supabase service-role keys must remain server-only. Verify build and visual behavior before deployment.
 
 <!-- BEGIN:nextjs-agent-rules -->

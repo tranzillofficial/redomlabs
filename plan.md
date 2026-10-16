@@ -385,4 +385,12 @@ Central invoice release verified: source f0b22b5a46c13c1a1ca370290eab4824e3b2d12
 - [x] Unified authorized chronological feed with bounded, validated cursor pagination; clearer invoice cards and grouped amounts/currencies, actor, date and creation snapshots. Purchase totals preserved.
 - [x] Existing/new sales and purchase save flows, history and financial restrictions passed browser regression checks.
 - [x] AR/EN 320/390/768/1440 visual/filter checks, 51 mixed records across cursor pages including exact timestamp/ID ties and source boundaries, grouped large prices, purchase totals and restricted scopes passed. Production build and live read-only cursor-field query passed.
-- [ ] Publish invoice register polish.
+- [x] Publish invoice register polish.
+
+Invoice register polish published: 32dc4e5194b6d883e84f56a7bf4ea27a2ee997a8 matches tested tree f6a9b510ff159d8885304683238787ef99d9603c. Production dpl_5a9RUEhNcVnnBG9hKg7mbLRZwSJQ READY on redomlabs.com/www. No data/schema changes.
+
+## Compact invoice choices and design preference — October 16, 2026
+- [x] Created, validated, committed and successfully pushed compact-ui-ux to the persistent Skills workspace (16f379b). Added project design defaults to AGENTS.md.
+- [x] Replaced oversized invoice type cards with ordinary compact choices and an icon close control; tightened invoice form/dialog spacing and secondary controls while keeping mobile touch targets.
+- [x] AR/EN 320/390/768/1440 measured dialog/control sizes and screenshots passed, together with creation, retry, history and permission regressions. Production build passed.
+- [ ] Publish compact invoice dialog.
