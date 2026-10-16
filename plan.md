@@ -376,4 +376,13 @@ Row/menu fixes published: source 5931da2fbd1ed6cdc96af45a768ce829566ff4b2 matche
 - [x] Per-customer authorized balances/history in Customers; paginated sales/purchase registers. Sales+finance staff can reach Invoices without purchase access; new identities additionally require crm.
 - [x] Live SQL rollback tests passed repeat purchases, atomic rollback/no orphans, duplicate retries, currency/actor/scope checks. Security advisor reports no new invoice findings; preexisting warnings unchanged.
 - [x] AR/EN 320/390/768/1440 browser flows passed existing/new sales, lost-confirmation retries, customer history/totals, purchases, actor/history, type restrictions and sales-only navigation. Reviewed mobile/desktop screenshots; production build passed.
-- [ ] Publish centralized invoice workspace.
+- [x] Publish centralized invoice workspace.
+
+Central invoice release verified: source f0b22b5a46c13c1a1ca370290eab4824e3b2d121 matches tested local tree 2eaac463b0a4c8ddd26a0c2bd18d1a2f1e3476fd. Production dpl_AFFKo2K6hbh4ECcqBziRrBbLhJLG READY with redomlabs.com/www aliases. Public admin route responds and requires login. No error/fatal runtime logs found for this deployment in the initial check. Additive atomic_invoice_new_customer migration applied; live SQL fixtures rolled back.
+
+## Invoice filter and card polish — October 16, 2026
+- [x] Removed duplicate invoice heading/description and oversized standalone filter buttons; compact All/Sales/Purchases filter sits opposite New.
+- [x] Unified authorized chronological feed with bounded, validated cursor pagination; clearer invoice cards and grouped amounts/currencies, actor, date and creation snapshots. Purchase totals preserved.
+- [x] Existing/new sales and purchase save flows, history and financial restrictions passed browser regression checks.
+- [x] AR/EN 320/390/768/1440 visual/filter checks, 51 mixed records across cursor pages including exact timestamp/ID ties and source boundaries, grouped large prices, purchase totals and restricted scopes passed. Production build and live read-only cursor-field query passed.
+- [ ] Publish invoice register polish.
