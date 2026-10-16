@@ -351,3 +351,11 @@ Compact controls release verified: source 439e4215201f0baa816bfd3cebfeab4dcde3bf
 - [x] Removed decorative bottom footer and reduced bottom page padding. Sidebar uses the canonical Brand SVG, wider layout, clearer larger navigation text/icons and improved scroll space.
 - [x] Production build passed; bilingual 320/390/768/1440 browser checks passed, original SVG/footer removal and mobile drawer/Escape verified. Desktop/mobile screenshots reviewed.
 - [ ] Publish dashboard frame cleanup.
+
+Dashboard frame published: source 673c7889bba9016f6e46db4b26a1c59166930646 matches tested tree d2f1c64298fa0aa9979cfb4467da0637b18e853d. Deployment dpl_DUJqbpiA3D78phJYU2mQgY5qxmZr READY with redomlabs.com/www aliases. No database changes.
+
+## Shared controls and bill form — October 16, 2026
+- [x] Compact shared pagination across dashboard/customer/invoice pages, smaller sidebar SVG/links, removed workspace label and redundant heading brand text.
+- [x] Renamed expense-facing section/copy to Bills / الفواتير while preserving internal scope, storage and outflow behavior. Rebuilt compact bill form and separated readable history/totals card.
+- [x] Build passed. AR/EN 320/390/768/1440 browser checks passed bill recording/history/attribution, financial restrictions, small pagination, removed labels and overflow. Screenshots reviewed.
+- [ ] Publish shared controls and bill form.

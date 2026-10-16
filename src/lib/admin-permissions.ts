@@ -22,7 +22,7 @@ export const sectionLabels: Record<AdminSection, { ar: string; en: string }> = {
   overview: { ar: "نظرة عامة", en: "Overview" },
   products: { ar: "المنتجات", en: "Products" },
   work: { ar: "أعمال العملاء", en: "Client work" },
-  expenses: { ar: "المصروفات", en: "Expenses" },
+  expenses: { ar: "الفواتير", en: "Bills" },
   finance: { ar: "عرض البيانات المالية", en: "View financial data" },
   crm: { ar: "العملاء", en: "Customers" },
   sales: { ar: "المبيعات", en: "Sales" },
