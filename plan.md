@@ -367,3 +367,13 @@ Shared controls/bills release verified: c96b0407d79db0c17668e67b66a6b7c6dca7247a
 - [x] Sales menus use viewport-positioned overlays, flip upward near the bottom, clamp to screen bounds and reposition on scroll/resize. Outside click dismisses; only one is open.
 - [x] Production build passed. AR/EN 320/390/768/1440 browser tests verified full-row toggles, keyboard identity button, excluded actions and bottom menu viewport bounds; screenshots reviewed.
 - [ ] Publish row interaction fixes.
+
+Row/menu fixes published: source 5931da2fbd1ed6cdc96af45a768ce829566ff4b2 matches tested tree 0106b34d522c06b53401287040d676665bde42e0. Production dpl_8wNz1kfFLP6wiVqGt4FykD2FPpSC READY on redomlabs.com/www. No data/schema changes.
+
+## Central invoice workspace — October 16, 2026
+- [x] Removed invoice creation from customer/sales account views; Invoices owns New and the Sales/Purchases type chooser. Existing purchase entries remain paid outflows.
+- [x] Existing/new customer sales invoices, atomic new customer creation, retry protection, preserved balances and recurring purchases. Applied atomic_invoice_new_customer to the connected database.
+- [x] Per-customer authorized balances/history in Customers; paginated sales/purchase registers. Sales+finance staff can reach Invoices without purchase access; new identities additionally require crm.
+- [x] Live SQL rollback tests passed repeat purchases, atomic rollback/no orphans, duplicate retries, currency/actor/scope checks. Security advisor reports no new invoice findings; preexisting warnings unchanged.
+- [x] AR/EN 320/390/768/1440 browser flows passed existing/new sales, lost-confirmation retries, customer history/totals, purchases, actor/history, type restrictions and sales-only navigation. Reviewed mobile/desktop screenshots; production build passed.
+- [ ] Publish centralized invoice workspace.
