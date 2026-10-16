@@ -359,3 +359,11 @@ Dashboard frame published: source 673c7889bba9016f6e46db4b26a1c59166930646 match
 - [x] Renamed expense-facing section/copy to Bills / الفواتير while preserving internal scope, storage and outflow behavior. Rebuilt compact bill form and separated readable history/totals card.
 - [x] Build passed. AR/EN 320/390/768/1440 browser checks passed bill recording/history/attribution, financial restrictions, small pagination, removed labels and overflow. Screenshots reviewed.
 - [ ] Publish shared controls and bill form.
+
+Shared controls/bills release verified: c96b0407d79db0c17668e67b66a6b7c6dca7247a matches tested tree 347e02da3af9203c9b71e7ec8b3c56af708c7342. Production dpl_9DK3rf6kCYwRLZ4iWU21CDEtxK7y READY with www/redomlabs.com aliases. No database/schema changes.
+
+## Account row interaction fixes — October 16, 2026
+- [x] Full customer/sales summary rows toggle expansion, excluding interactive controls to avoid duplicate toggles.
+- [x] Sales menus use viewport-positioned overlays, flip upward near the bottom, clamp to screen bounds and reposition on scroll/resize. Outside click dismisses; only one is open.
+- [x] Production build passed. AR/EN 320/390/768/1440 browser tests verified full-row toggles, keyboard identity button, excluded actions and bottom menu viewport bounds; screenshots reviewed.
+- [ ] Publish row interaction fixes.
