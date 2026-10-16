@@ -411,3 +411,9 @@ Named secondary contact release verified: source 28cb0d815bef72a01b228cedd8a8c4c
 - [x] Archived only the supplied image-subscription invoice. Concurrently entered invoices triggered the original guard and were preserved. Retained invoices were renumbered from 1,2 onward, identity generation restored and next number verified.
 - [x] Preserved the protected customer's original balance; cleared other legacy balances while retaining amounts from the newly entered invoices. Customer profiles/contact details remain intact.
 - [x] Authenticated owner-session rollback query verified eight visible invoices numbered 1–8 and zero archived rows visible. Next sequence value is 9. No frontend release required.
+
+## Compact overview redesign — October 16, 2026
+- [x] Replaced promotional/welcome panels and oversized shortcuts with compact customer counts, actual account totals grouped by currency, recent customer records and a small content/activity strip.
+- [x] Reused session-scoped CRM helpers and authorized financial RPCs; unauthorized domains are neither fetched nor serialized. Added loading, retry, empty and partial-error presentation.
+- [x] Production build passed; AR/EN 320/390/768/1440 screenshots reviewed. Browser checks cover exact stage counts, currency separation, navigation and staff financial read suppression.
+- [ ] Publish overview redesign.
