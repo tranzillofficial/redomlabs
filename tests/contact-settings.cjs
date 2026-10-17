@@ -1,0 +1,10 @@
+const assert=require('assert/strict'),fs=require('fs'),vm=require('vm'),ts=require('typescript');
+const js=ts.transpileModule(fs.readFileSync('src/lib/contact-settings.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+const moduleStub={exports:{}};vm.runInNewContext(js,{exports:moduleStub.exports,module:moduleStub,URL,FormData});const {normalizeContact,contactFormPayload}=moduleStub.exports;
+const form=rows=>{const f=new FormData();f.set('address_en','Cairo');f.set('address_ar','القاهرة');f.set('contact_people',JSON.stringify(rows));return f};
+assert.equal(normalizeContact({phone:'01012345678'}).contact_people[0].phone,'01012345678');
+assert.equal(normalizeContact({phone:'01012345678',contact_people:[]}).contact_people.length,0);
+let p=contactFormPayload(form([{phone:'01012345678'},{phone:'01112345678',name:'Person',job_title:'Sales',email:'sales@example.invalid'}]));assert.equal(p.contact_people[0].name,'');assert.equal(p.contact_people[1].email,'sales@example.invalid');assert.equal(p.phone,'01012345678');
+for(const rows of [[{phone:'abc'}],[{phone:'01012345678',email:'invalid'}],[{phone:'01012345678',email:'x@y.invalid\nBcc:other@example.invalid'}],[{phone:'01012345678',name:123}],[{phone:'01012345678',job_title:'a'.repeat(101)}],Array.from({length:21},()=>({phone:'01012345678'}))])assert.equal(contactFormPayload(form(rows)),null);
+assert.equal(contactFormPayload(form([])).phone,'');const f=form([]);f.set('contact_people','not json');assert.equal(contactFormPayload(f),null);
+console.log('PASS contact payload validation, backwards-compatible normalization, explicit clearing and bounded list');

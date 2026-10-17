@@ -1,0 +1,25 @@
+begin;
+insert into auth.users(id,email,raw_app_meta_data) values('c1000000-0000-4000-8000-000000000001','contacts-owner@example.invalid','{"indom_admin":true}'),('c1000000-0000-4000-8000-000000000002','contacts-staff@example.invalid','{}');
+insert into public.admin_staff(user_id,name,email,permissions) values('c1000000-0000-4000-8000-000000000002','CRM only','contacts-staff@example.invalid',array['crm']);
+select set_config('request.jwt.claims','{"sub":"c1000000-0000-4000-8000-000000000001","role":"authenticated"}',true);
+set local role authenticated;
+do $$declare people jsonb='[{"phone":"+201012345678","name":"","job_title":"","email":""},{"phone":"+201111222333","name":"Test contact","job_title":"Sales manager","email":"contact@example.invalid"}]';begin
+ update public.contact_settings set contact_people=people where id=1;
+ if not found or (select contact_people from public.contact_settings where id=1)<>people then raise exception 'Contact save/read failed'; end if;
+ begin update public.contact_settings set contact_people='[{"phone":"abc"}]' where id=1;raise exception 'Invalid phone accepted';exception when check_violation then null;end;
+ begin update public.contact_settings set contact_people='[{"phone":"01012345678","email":"bad"}]' where id=1;raise exception 'Invalid email accepted';exception when check_violation then null;end;
+ begin update public.contact_settings set contact_people='[{"phone":"01012345678","name":123}]' where id=1;raise exception 'Invalid name accepted';exception when check_violation then null;end;
+ update public.contact_settings set contact_people='[]' where id=1;
+ if (select jsonb_array_length(contact_people) from public.contact_settings where id=1)<>0 then raise exception 'Clearing list failed';end if;
+ update public.contact_settings set contact_people=people where id=1;
+end $$;
+reset role;
+select set_config('request.jwt.claims','{"sub":"c1000000-0000-4000-8000-000000000002","role":"authenticated"}',true);
+set local role authenticated;
+do $$begin update public.contact_settings set contact_people='[]' where id=1;if found then raise exception 'Unauthorized settings update';end if;end $$;
+reset role;
+set local role anon;
+do $$begin if (select jsonb_array_length(contact_people) from public.contact_settings where id=1)<>2 then raise exception 'Public contact read failed';end if;end $$;
+reset role;
+select 'PASS owner save/read/clear, invalid phone/email/type rejection, CRM-only write denial and public read' as test_result;
+rollback;

@@ -416,4 +416,13 @@ Named secondary contact release verified: source 28cb0d815bef72a01b228cedd8a8c4c
 - [x] Replaced promotional/welcome panels and oversized shortcuts with compact customer counts, actual account totals grouped by currency, recent customer records and a small content/activity strip.
 - [x] Reused session-scoped CRM helpers and authorized financial RPCs; unauthorized domains are neither fetched nor serialized. Added loading, retry, empty and partial-error presentation.
 - [x] Production build passed; AR/EN 320/390/768/1440 screenshots reviewed. Browser checks cover exact stage counts, currency separation, navigation and staff financial read suppression.
-- [ ] Publish overview redesign.
+- [x] Publish overview redesign.
+
+Overview release verified: source 49692b6fceac178bfe250be316d2bf931f54d6d1 matches tested tree 4f739b6f8dbe4e6c22208753bf93b93a864cacd4. Production dpl_AZLeqzx3L29on28A7FhswNik18So READY with www/redomlabs.com aliases. No data/schema changes.
+
+## Multiple public company contacts — October 17, 2026
+- [x] Added compact add/remove phone rows in contact settings with optional name, job title and email; general company email remains separate. Phone-only contacts render only their number.
+- [x] Applied additive company_multiple_contact_people migration, preserving the existing phone and current settings RLS. Contact list validation exists in both the server payload and database constraint; the first phone remains mirrored to the legacy field.
+- [x] Unit validation and live rollback SQL tests passed owner CRUD, invalid field rejection, public reads and CRM-only write denial. Security advisor shows only existing findings.
+- [x] AR/EN 320/390/768/1440 browser flows passed add/save/retry/reload/remove, optional fields, phone-only rendering and the existing WhatsApp footer rule. Production build passed.
+- [ ] Publish multiple company contacts.
