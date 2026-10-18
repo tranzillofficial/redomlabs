@@ -425,4 +425,14 @@ Overview release verified: source 49692b6fceac178bfe250be316d2bf931f54d6d1 match
 - [x] Applied additive company_multiple_contact_people migration, preserving the existing phone and current settings RLS. Contact list validation exists in both the server payload and database constraint; the first phone remains mirrored to the legacy field.
 - [x] Unit validation and live rollback SQL tests passed owner CRUD, invalid field rejection, public reads and CRM-only write denial. Security advisor shows only existing findings.
 - [x] AR/EN 320/390/768/1440 browser flows passed add/save/retry/reload/remove, optional fields, phone-only rendering and the existing WhatsApp footer rule. Production build passed.
-- [ ] Publish multiple company contacts.
+- [x] Publish multiple company contacts.
+
+Multiple company contacts release verified: source 7627d5813094a136edd15955a9c815a51e6544ff matches tested tree b1ac3f87dd52f4e7d0fa49e99f5eccb6a3c4ae7d. Production dpl_3vxYs6YySAJ3FbVDgBwXTTkiervv READY with www/redomlabs.com aliases. Additive migration applied and existing phone preserved; no error/fatal runtime logs for this deployment at release check.
+
+## Admin PWA and audited financial edits — October 18, 2026
+- [x] Added bilingual scoped admin manifests, standalone display, original R mark PNG/maskable icons, install action with browser/iOS guidance and a network-only service worker with a static offline screen. No authenticated responses or financial writes are cached/queued.
+- [x] Applied additive audited_invoice_discounts_and_payment_edits schema. Sales invoices support gross/discount/net values, sales and purchase edits use revision guards and stable retry IDs, and private audit records stamp the actual actor. Invoice changes update cumulative balances only by their deltas, preserving legacy balances.
+- [x] Added invoice editing from Invoices and customer invoice history, plus cumulative paid-total correction from customer details. Account-wide payments remain separate from invoice-specific payments and the UI explains this. Existing Sales paid edits now use the audited guarded payment path.
+- [x] Live rollback SQL checks passed discounts, legacy preservation, atomic delta/retry safety, stale/invalid edits, purchases, actor audit and domain/anon write denial. Test fixture preserves the invoice sequence; next invoice remains 9 after verification. Advisor adds only the expected private audit table RLS-with-no-client-policy INFO.
+- [x] AR/EN browser checks passed edits, lost-confirmation retry, conflicts, customer paid/history updates, purchases, financial restrictions, 320/390/768/1440 layouts, install guidance/event, manifests/icons/SW headers and an uncached offline navigation. Existing/new-customer invoice creation regression passed. Production build passed.
+- [ ] Publish PWA and invoice/payment edits.

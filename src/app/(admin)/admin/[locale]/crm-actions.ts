@@ -1,5 +1,6 @@
 "use server";
 import { contactAdminClient } from "../../../../lib/contact-service";
+import {updateCustomerPayment} from './invoice-actions';
 import {requireSection} from "../../../../lib/admin-auth";
 import type { CRMCustomer } from "../../../../lib/crm-types";
 const uuid = (v: string) =>
@@ -108,8 +109,6 @@ export async function proposalToCRM(id: string) {
 export async function loadSales(page=0,search="") {
  try {await requireSection('finance');const client=await contactAdminClient('sales');if(!Number.isInteger(page)||page<0||typeof search!=="string"||search.length>200)throw Error();const {data,error}=await client.rpc('sales_list',{page_number:page,search_term:search,stage_filter:'all'});if(error)throw error;return {data:data.data as CRMCustomer[],count:data.count as number,error:false}}catch{return {data:[] as CRMCustomer[],count:0,error:true}}
 }
-export async function saveSale(row:{id:string;total_amount:number;paid_amount:number;currency:string;service_name:string;updated_at:string}){
- try{await requireSection('finance');const c=await contactAdminClient('sales');const valid=(n:number)=>Number.isFinite(n)&&n>=0&&n<=999999999999.99&&Math.abs(n*100-Math.round(n*100))<.001;if(typeof row.updated_at!=='string'||!Number.isFinite(Date.parse(row.updated_at))||!uuid(row.id)||!valid(row.total_amount)||!valid(row.paid_amount)||row.paid_amount>row.total_amount||!['EGP','USD','SAR','AED','GBP','EUR'].includes(row.currency)||typeof row.service_name!=='string'||!row.service_name.trim()||row.service_name.length>300)return false;const {data,error}=await c.from('crm_customers').update({total_amount:row.total_amount,paid_amount:row.paid_amount,currency:row.currency,service_name:row.service_name.trim(),updated_at:new Date().toISOString()}).eq('id',row.id).eq('updated_at',row.updated_at).select('id');return !error&&data?.length===1}catch{return false}
-}
+export async function saveSale(row:{id:string;paid_amount:number;updated_at:string}){return (await updateCustomerPayment({id:row.id,paid_amount:row.paid_amount,updated_at:row.updated_at,mutation_id:crypto.randomUUID()})).ok}
 
 export async function customerStats(search="") {const stages=['all','customer','potential','follow_up'] as const;const results=await Promise.all(stages.map(stage=>loadCRM(0,search,stage)));if(results.some(r=>r.error))return null;return {all:results[0].count,customer:results[1].count,potential:results[2].count,follow_up:results[3].count};}

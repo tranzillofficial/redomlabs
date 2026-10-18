@@ -1,0 +1,4 @@
+export async function GET(_:Request,{params}:{params:Promise<{locale:string}>}){
+ const {locale}=await params;if(!['ar','en'].includes(locale))return new Response(null,{status:404});
+ return Response.json({id:'/admin/',name:'Redom Labs • Admin',short_name:'Redom Admin',description:locale==='ar'?'لوحة إدارة Redom Labs':'Redom Labs administration',lang:locale,dir:locale==='ar'?'rtl':'ltr',start_url:`/admin/${locale}/dashboard`,scope:'/admin/',display:'standalone',background_color:'#f5f4f0',theme_color:'#285f49',icons:[{src:'/admin/icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:'/admin/icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},{src:'/admin/icon-maskable.png',sizes:'512x512',type:'image/png',purpose:'maskable'}]},{headers:{'Content-Type':'application/manifest+json','Cache-Control':'public, max-age=3600'}});
+}
