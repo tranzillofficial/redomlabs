@@ -79,7 +79,7 @@ create table if not exists public.automation_integrations (
 create or replace function public.automation_is_allowed()
 returns boolean language sql stable security definer set search_path = '' as $$
  select exists(select 1 from auth.users u where u.id=auth.uid() and u.raw_app_meta_data->>'indom_admin'='true')
- or exists(select 1 from public.admin_staff s where s.user_id=auth.uid() and s.active=true and s.permissions ? 'automation');
+ or exists(select 1 from public.admin_staff s where s.user_id=auth.uid() and s.active=true and 'automation'=any(s.permissions));
 $$;
 revoke all on function public.automation_is_allowed() from public;
 grant execute on function public.automation_is_allowed() to authenticated;
