@@ -10,6 +10,7 @@ export const adminSections = [
   "inquiries",
   "forms",
   "settings",
+  "automation",
 ] as const;
 export type AdminSection = (typeof adminSections)[number];
 export type AdminAccess = {
@@ -30,4 +31,5 @@ export const sectionLabels: Record<AdminSection, { ar: string; en: string }> = {
   inquiries: { ar: "رسائل التواصل", en: "Inquiries" },
   forms: { ar: "نموذج التواصل", en: "Contact form" },
   settings: { ar: "الإعدادات", en: "Settings" },
+  automation: { ar: "مركز الأتمتة", en: "Automation Hub" },
 };
