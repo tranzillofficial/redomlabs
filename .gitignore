@@ -6,3 +6,5 @@ node_modules/
 
 # Review screenshots are preserved in the saved deliverable.
 docs/home-*.png
+
+supabase/.temp/

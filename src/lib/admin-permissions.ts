@@ -1,5 +1,6 @@
 export const adminSections = [
   "overview",
+  "automation",
   "products",
   "work",
   "crm",
@@ -10,7 +11,6 @@ export const adminSections = [
   "inquiries",
   "forms",
   "settings",
-  "automation",
 ] as const;
 export type AdminSection = (typeof adminSections)[number];
 export type AdminAccess = {
@@ -20,6 +20,7 @@ export type AdminAccess = {
   permissions: AdminSection[];
 };
 export const sectionLabels: Record<AdminSection, { ar: string; en: string }> = {
+  automation: { ar: "مركز الأتمتة", en: "Automation Hub" },
   overview: { ar: "نظرة عامة", en: "Overview" },
   products: { ar: "المنتجات", en: "Products" },
   work: { ar: "أعمال العملاء", en: "Client work" },
@@ -31,5 +32,4 @@ export const sectionLabels: Record<AdminSection, { ar: string; en: string }> = {
   inquiries: { ar: "رسائل التواصل", en: "Inquiries" },
   forms: { ar: "نموذج التواصل", en: "Contact form" },
   settings: { ar: "الإعدادات", en: "Settings" },
-  automation: { ar: "مركز الأتمتة", en: "Automation Hub" },
 };

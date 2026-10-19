@@ -436,3 +436,17 @@ Multiple company contacts release verified: source 7627d5813094a136edd15955a9c81
 - [x] Live rollback SQL checks passed discounts, legacy preservation, atomic delta/retry safety, stale/invalid edits, purchases, actor audit and domain/anon write denial. Test fixture preserves the invoice sequence; next invoice remains 9 after verification. Advisor adds only the expected private audit table RLS-with-no-client-policy INFO.
 - [x] AR/EN browser checks passed edits, lost-confirmation retry, conflicts, customer paid/history updates, purchases, financial restrictions, 320/390/768/1440 layouts, install guidance/event, manifests/icons/SW headers and an uncached offline navigation. Existing/new-customer invoice creation regression passed. Production build passed.
 - [ ] Publish PWA and invoice/payment edits.
+
+## Automation Hub production upgrade — October 19, 2026
+- [x] Implemented bilingual manual operations workspace, leads and evidence/score editor, campaigns, pipeline, approval templates, follow-ups, editorial calendar, activity and integration states.
+- [x] Added isolated PostgreSQL tests for RLS, dedupe, evidence, approval resets and reply/opt-out suppression. Build passed before integration with the concurrent foundation release.
+- [ ] Upgrade the foundation schema without losing rows; repeat checks against the integrated tree and verify live authorization.
+- [ ] Release and record deployment outcome. External adapters remain disconnected; no email or ads sent.
+
+Automation Hub integration milestone:
+- [x] Merged the concurrent foundation release `3c40ce9` and replaced its superseded UI, preserving unrelated work.
+- [x] Applied production `automation_hub_production_upgrade` after a transient expired-request failure. Ten protected tables verified; 0 leads/0 messages, all five integration states disconnected, anonymous lead reads and dashboard writes to audit/jobs denied.
+- [x] Upgraded admin-team Edge Function to version 4 with the automation scope. Existing team handler tests passed.
+- [x] Clean production build and TypeScript passed; isolated PostgreSQL clean/install/upgrade/rerun and validation tests passed.
+- [ ] Browser visual/interaction checks remain unavailable: control-browser is not installed in this managed session. No screenshots or browser-flow pass is claimed.
+- [ ] Verify GitHub push and production Vercel release.
