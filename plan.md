@@ -440,8 +440,8 @@ Multiple company contacts release verified: source 7627d5813094a136edd15955a9c81
 ## Automation Hub production upgrade — October 19, 2026
 - [x] Implemented bilingual manual operations workspace, leads and evidence/score editor, campaigns, pipeline, approval templates, follow-ups, editorial calendar, activity and integration states.
 - [x] Added isolated PostgreSQL tests for RLS, dedupe, evidence, approval resets and reply/opt-out suppression. Build passed before integration with the concurrent foundation release.
-- [ ] Upgrade the foundation schema without losing rows; repeat checks against the integrated tree and verify live authorization.
-- [ ] Release and record deployment outcome. External adapters remain disconnected; no email or ads sent.
+- [x] Upgraded the foundation schema without deleting rows; clean/install/upgrade tests and live owner read authorization verified.
+- [x] Released initial upgrade on production. External adapters remain disconnected; no email or ads sent.
 
 Automation Hub integration milestone:
 - [x] Merged the concurrent foundation release `3c40ce9` and replaced its superseded UI, preserving unrelated work.
@@ -449,4 +449,6 @@ Automation Hub integration milestone:
 - [x] Upgraded admin-team Edge Function to version 4 with the automation scope. Existing team handler tests passed.
 - [x] Clean production build and TypeScript passed; isolated PostgreSQL clean/install/upgrade/rerun and validation tests passed.
 - [ ] Browser visual/interaction checks remain unavailable: control-browser is not installed in this managed session. No screenshots or browser-flow pass is claimed.
-- [ ] Verify GitHub push and production Vercel release.
+- [x] Verified GitHub source 33f6f0b4009c97edb2a52bd05714fc2b946b6028 and production dpl_C3SbwfMVisYhn271GdCpSgFLwQPY READY on www.redomlabs.com. Source tree 208a377e36a13bda88c6e71b26c3351a07124a56 matches the locally tested tree.
+
+Release follow-up: sent/reply KPIs now require an external delivery reference and timestamp; default drafts do not claim an unperformed website review. Follow-up/editorial UTC dates are visible in the lists. Browser verification remains unavailable.
